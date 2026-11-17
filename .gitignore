@@ -1,0 +1,76 @@
+# EShop SUT is managed separately
+/eshop-sut/
+
+# Dependencies and local tool environments
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Environment files (including local and variant files)
+.env
+.env.*
+*.env
+*.env.*
+.envrc
+
+# Credentials, private keys, and local secret stores
+secrets/
+.secrets/
+credentials/
+.aws/
+.ssh/
+.npmrc
+.pypirc
+credentials.json
+credentials*.json
+service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.secrets.*
+
+# Local test databases, database volumes, dumps, and backups
+database/
+databases/
+db-data/
+mysql-data/
+postgres-data/
+mongodb-data/
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.mdb
+*.accdb
+*.mdf
+*.ldf
+*.sql
+*.sql.*
+*.dump
+*.dump.*
+*.bson
+*.rdb
+*.aof
+*.bak
+*.backup
+
+# Runtime logs and local caches
+*.log
+.cache/
+.jmeter/
+hs_err_pid*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
