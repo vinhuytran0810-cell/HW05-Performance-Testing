@@ -539,3 +539,186 @@ Bắt đầu quay trước lệnh Run; để chạy hết preflight → tải �
 Launcher sẽ kiểm tra sau chạy nhưng mình chưa có kết quả Load để báo cáo. Hiện chỉ kiểm tra cú pháp, chạy PrepareOnly và xác nhận hash JMX/CSV/helper không đổi; `results/load/` vẫn chỉ có `.gitkeep`.
 
 Đã ghi [AI Audit](E:/KiemThu/HW05/audit/audit-report.md). Không sửa SUT/JMX, reset database, tạo screenshot/video, thực hiện Task 2, tạo báo cáo Markdown riêng hoặc commit. **Chờ bạn xác nhận trước khi thực thi.**
+
+
+## Interaction 7
+
+- **AI Tool:** OpenAI Codex
+- **Date & Time:** 2026-11-19T15:57:33+07:00 ? Asia/Saigon (UTC+07:00)
+
+### Prompt
+
+$performance-test-auditor
+
+# Task 1 ? Thi?t k? Stress Test Plan
+
+S? d?ng Agent Skill ?? thi?t k? Stress Testing d?a tr?n Load Test Plan hi?n c?.
+
+Y?u c?u:
+
+1. Gi? nguy?n workflow Category Management & Verification, CSV, correlation, assertions v? think time.
+2. T?o test plan `test-plans/23120274_Stress_YYYYMMDD.jmx`, s? d?ng ng?y t?o th?c t?.
+3. Thi?t k? m? h?nh t?i t?ng d?n, tham kh?o 10 ? 20 ? 30 ? 40 ? 50 VU, m?i c?p 60 gi?y. Gi?i th?ch l?a ch?n d?a tr?n k?t qu? Load Test v? ph?n c?ng hi?n t?i.
+4. S? d?ng Aggregate Report thay cho Summary Report.
+5. Review c? ch? d?ng t?i khi assertion th?t b?i ?? ph? h?p m?c ti?u Stress Testing. Ph?n bi?t l?i hi?u n?ng v?i l?i ?nh h??ng ??n an to?n d? li?u v? t?i kho?n Admin.
+6. T?i s? d?ng scripts hi?n c? n?u ph? h?p, kh?ng sao ch?p code kh?ng c?n thi?t.
+7. Ki?m tra t?nh JMX b?ng validator c?a Skill v? review th? c?ng.
+
+Kh?ng s?a Load Test Plan ?? ho?n th?nh ho?c l?m ?nh h??ng kh? n?ng t?i th?c thi Load Test.
+
+Kh?ng s?a source SUT, kh?ng reset database, kh?ng ch?y Stress Test, kh?ng t?o b?ng ch?ng gi?, kh?ng t?o b?o c?o Markdown trung gian v? kh?ng commit.
+
+Ghi AI Audit theo AGENTS.md.
+
+B?o c?o c?u tr?c JMX, m? h?nh t?i, c? ch? x? l? l?i v? k?t qu? validation b?ng ti?ng Vi?t. D?ng ?? t?i review.
+
+### AI Output
+
+M?nh chuy?n sang thi?t k? Stress Test b?ng skill **performance-test-auditor**. M?nh s? gi? nguy?n b? Load ?? ho?n th?nh, ??c k?t qu? Load v? ph?n c?ng hi?n t?i ?? ch?n m? h?nh t?ng t?i, r?i t?ch l?i hi?u n?ng kh?i l?i an to?n khi thi?t k? c? ch? d?ng. Ph?n ki?m tra tr??c commit v?a xong c?ng s? ???c ghi v?o AI Audit; m?nh ch?a ch?y Stress Test hay s?a b?ng ch?ng g?c.
+
+
+## Interaction 8
+
+- **AI Tool:** OpenAI Codex
+- **Date & Time:** 2026-11-19T15:57:33+07:00 ? Asia/Saigon (UTC+07:00)
+
+### Prompt
+
+t?i cho ph?p append v?o AI Audit, h?y ti?p t?c l?m c?ng vi?c hi?n t?i
+
+### AI Output
+
+?? t?o [23120274_Stress_20261119.jmx](/E:/KiemThu/HW05/test-plans/23120274_Stress_20261119.jmx) v? [category-stress-support.groovy](/E:/KiemThu/HW05/scripts/category-stress-support.groovy), s? d?ng skill **performance-test-auditor**.
+
+JMX g?m preflight ? n?m Thread Group d?ng chung m?t workflow fragment ? kho?ng ngh? ph?c h?i ? guarded cleanup; report view l? **Aggregate Report**. Workflow gi? ??ng Login ? View ? Create ? Delete ? Verify. CSV, request, correlation, assertions nghi?p v? v? think time 1?2 gi?y tr??c Login ???c gi? nguy?n.
+
+| VU m?c ti?u | Ramp-up | Kho?ng gi? ?n ??nh t?nh t? ??u workload |
+|---:|---:|---:|
+| 10 | 0?20 gi?y | 20?80 gi?y |
+| 20 | 80?100 gi?y | 100?160 gi?y |
+| 30 | 160?180 gi?y | 180?240 gi?y |
+| 40 | 240?260 gi?y | 260?320 gi?y |
+| 50 | 320?340 gi?y | 340?400 gi?y |
+
+M?i b?c gi? ?? **60 gi?y sau ramp-up**, n?n t?ng workload l? **400 gi?y**, ti?p theo ngh? 60 gi?y tr??c ki?m tra/cleanup. C?c m?c l? m?c ti?u thi?t k?; l?i ho?c ch?t an to?n c? th? l?m t?i th?c t? th?p h?n.
+
+[MEASURED] Load hi?n c?: 5.595 HTTP samples, 0 l?i, cleanup VERIFIED. M?y i5-11400H, 6 cores/12 logical CPUs, RAM kho?ng 15,74 GiB. [?? XU?T] B?t ??u t? m?c Load 10 VU r?i th?m t?ng nh?m 10, gi? ramp-up 20 gi?y ?? quan s?t di?n bi?n qua c?c b?c. ??y ch?a ph?i b?ng ch?ng m?y ho?c SUT ch?u ???c 50 VU. RAM tr?ng l?c **15:54:19 ng?y 19/11/2026 UTC+07:00 l? 1.335 MiB**, d??i ch?t **2.048 MiB**; ph?i gi?i ph?ng RAM v? ki?m tra l?i tr??c th?c thi.
+
+Ch?nh s?ch l?i:
+
+- **L?i kh? d?ng tr??c mutation:** HTTP 429/500/502/503/504 ho?c l?i transport trong allowlist t?i Login/View v?n ghi sample/assertion th?t b?i, ch?n request ph? thu?c, cho ph?p iteration ti?p theo theo pacing. Kh?ng t? ??t ng??ng latency/SLA.
+- **L?i an to?n:** sai identity/role, tr?ng th?i Admin b?t th??ng, 401/403, sai contract/correlation, baseline/manifest h?ng ho?c k?t qu? mutation kh?ng ch?c ch?n s? ch?n iteration/intent m?i tr?n to?n run. Request ?ang x? l? c? th? ho?n t?t; b?n ghi ?? x?c nh?n ownership v?n c? c? h?i cleanup.
+- **Kh?ng retry m? Create/Delete.** Manifest ???c flush tr??c Create, l?u ID th?t tr??c Delete; ??i chi?u ID/name v? lo?i tr? baseline/product references. Verify ki?m tra absence theo ID v? exact name, kh?ng ki?m tra t?ng count c? ??nh.
+
+Adapter t?i s? d?ng helper v? script recovery hi?n c?; ph?n initializer ri?ng ghi ??ng workload Stress. JWT/ID v?n thread-local, worker ???c ph?n bi?t 1?50 gi?a c?c nh?m. Recovery ch?y ngo?i ?o; kho?ng ngh? h?u h?n kh?ng ch?ng minh h?t late write. Forced kill c? th? b? qua tearDown; intent ch?a x?c ??nh c?n recovery ??c l?p sau x?c nh?n m?i tr??ng quiescent. Launcher/checker Load v?n d?nh cho Load.
+
+K?t qu? ki?m tra t?nh:
+
+- Groovy helper v? 15 script nh?ng bi?n d?ch ???c; JMeter 5.6.3 ??c ???c JMX.
+- N?m Module Controller ??u resolve ??ng: m?i module c? 5 HTTP sampler, 5 assertions, 2 JSON Extractor v? 1 timer.
+- Validator Skill tr?n JMX g?c: **REVIEW_REQUIRED**, ba c?nh b?o do kh?ng m? r?ng fragment b? t?t. B?n m? r?ng t?m th?i: exit code 0, **kh?ng c? finding**, tr?ng th?i v?n REVIEW_REQUIRED.
+- ??i chi?u c?u tr?c request/headers/guards/extractors/timer ??t; s?u hash c?a JMX Load, helper, recovery, launcher, checker v? CSV gi? nguy?n.
+
+?? append [AI Audit](/E:/KiemThu/HW05/audit/audit-report.md). Ch?a ch?y Stress/pilot; scheduling th?c t?, l?i timeout, cleanup khi gi?n ?o?n v? gi?i h?n ch?u t?i c?n c?n x?c minh. Kh?ng s?a SUT, reset database, t?o b?o c?o Markdown ri?ng ho?c commit. **D?ng t?i ??y ?? b?n review.**
+
+
+## Interaction 9
+
+- **AI Tool:** OpenAI Codex
+- **Date & Time:** 2026-11-19T16:13:25+07:00 ? Asia/Saigon (UTC+07:00)
+
+### Prompt
+
+$performance-test-auditor
+
+# Task 1 ? Chu?n b? th?c thi Stress Testing
+
+Stress Test Plan ?? ???c review t?nh.
+
+S? d?ng file `test-plans/23120274_Stress_20261119.jmx` hi?n c?.
+
+Y?u c?u:
+
+1. T?i s? d?ng launcher v? checker c?a Load Testing n?u ph? h?p ?? h? tr? Stress Testing.
+2. Gi? nguy?n m? h?nh t?i 10 ? 20 ? 30 ? 40 ? 50 VU, t?ng workload 400 gi?y v? recovery 60 gi?y.
+3. Ki?m tra preflight, credentials, RAM, backend v? baseline.
+4. Th?c hi?n pilot ng?n ?? x?c minh Module Controller, correlation, worker namespace, assertions v? cleanup khi ch?y nhi?u Thread Group. Gi? k?t qu? pilot ri?ng.
+5. Chu?n b? l?u raw JTL, HTML Dashboard, logs, CPU/RAM v? postcheck v?o results/stress/.
+6. B?o ??m JTL c? timestamp v? active thread count ?? ph?n t?ch t?ng c?p t?i. Kh?ng coi performanceFailed=false l? kh?ng c? l?i HTTP/assertion.
+7. Cung c?p l?nh ch?y Stress Test ch?nh th?c v? h??ng d?n m? Aggregate Report sau ch?y.
+
+Kh?ng thay ??i Load Test ?? ho?n th?nh, kh?ng s?a SUT, kh?ng reset database, kh?ng t?o b?o c?o Markdown trung gian v? kh?ng commit.
+
+N?u RAM kh?ng ?? th? d?ng th?c thi v? th?ng b?o.
+
+Kh?ng t? ch?y Stress Test ch?nh th?c. T?i s? tr?c ti?p th?c thi v? quay video.
+
+Ghi AI Audit theo AGENTS.md v? tr? k?t qu? b?ng ti?ng Vi?t.
+
+### AI Output
+
+?? chu?n b? xong v? x?c minh pilot. **Ch?a ch?y Stress Test ch?nh th?c.**
+
+?? b? sung [launcher Stress](/E:/KiemThu/HW05/scripts/run-category-stress.ps1), [checker Stress](/E:/KiemThu/HW05/scripts/check-category-stress-run.py) v? profile pilot trong JMX/helper Stress hi?n c?. Checker t?i s? d?ng c?c h?m ki?m tra credentials/baseline c?a Load; b? Load, CSV v? recovery g?c gi? nguy?n hash. Profile ch?nh th?c v?n **10?20?30?40?50 VU, workload 400 gi?y + recovery 60 gi?y**, think time gi? nguy?n.
+
+[MEASURED] Preflight sau khi b?n b?t l?i backend: PID **31704**, baseline **3 categories / 5 products**, credentials ???c n?p t? CLIXML ?? gitignore v? ki?m tra ch? ??c. Admin s?ch, kh?ng kh?a. RAM tr?ng l?n ki?m tra cu?i **3.858 MiB**; launcher ki?m tra l?i tr??c m?i l?n ch?y v? ch?n khi d??i **2.048 MiB**.
+
+Pilot cu?i t?i [stress_pilot_20261119T161026_2cd2b23f](/E:/KiemThu/HW05/results/stress/pilot/stress_pilot_20261119T161026_2cd2b23f):
+
+- 5 Thread Group ? 1 VU, workload 30 gi?y, recovery 60 gi?y.
+- **385 HTTP samples**, 77 m?u m?i sampler; **77 iteration ho?n ch?nh**, 0 l?i HTTP/assertion.
+- C? 5 worker 1?5 ho?n t?t; correlation, manifest v? cleanup ??t. Categories/products kh?p baseline; Admin attempts=0, locked_until=null; kh?ng c?n unresolved intent.
+- Dashboard t?o ???c; native exit code=0; c? 93 m?u CPU/RAM, RAM tr?ng th?p nh?t 2.704 MiB.
+- Qu?t 143 file k?t qu?/manifest kh?ng ph?t hi?n credentials ?? bi?t ho?c JWT. Raw JTL c? `timeStamp`, `grpThreads`, `allThreads`; kh?ng l?u body/headers.
+
+L?i th?c t? ?? x? l?: pilot ??u c? 375 samples kh?ng l?i nh?ng **Dashboard th?t b?i do thi?u `responseMessage`**, d? JMeter tr? exit code 0. ?? gi? nguy?n l?n ?? t?i `results/stress/pilot/stress_pilot_20261119T160730_17af68e9/`. C?u h?nh hi?n l?u `responseMessage` b?ng m? ch?n ?o?n ?? l?m s?ch; status v? success v?n l? k?t qu? th?t. Checker ??m `failedSamples`, HTTP non-200 v? failed-200 ??c l?p v?i c? d?ng an to?n; tr?ng th?i ki?m ch?ng artifacts kh?ng ph?i SLA PASS.
+
+?? chu?n b? quay video, ch?y t? PowerShell:
+
+```powershell
+Set-Location E:\KiemThu\HW05
+.\scriptsun-category-stress.ps1 -PrepareOnly
+```
+
+Khi s?n s?ng quay v? m?i tr??ng v?n c? l?p, t? ch?y l?nh ch?nh th?c **kh?ng th?m `-Pilot`**:
+
+```powershell
+.\scriptsun-category-stress.ps1 -Run -ConfirmIsolation
+```
+
+Launcher in l?nh JMeter non-GUI th?c t?, g?i ??ng b? v? ghi nh?n `$LASTEXITCODE` ngay sau launcher. Credentials ch? truy?n qua environment c?a process, kh?ng ??a v?o CLI. Backend CPU/RAM ???c thu m?i gi?y theo PID/start time; thay ??i backend ho?c thi?u RAM s? y?u c?u d?ng JMeter. Kh?ng restart SUT ?? k?t th?c run.
+
+K?t qu? ch?nh th?c s? ???c t?o ri?ng t?i:
+
+```text
+results/stress/official/<run_id>/
+??? samples.jtl
+??? jmeter.log
+??? html/index.html
+??? backend-resources.csv
+??? preflight.json
+??? execution-start.json
+??? execution.json
+??? post-run-baseline.json
+??? postcheck.json
+```
+
+Manifest n?m t?i `audit/manifests/<run_id>/stress_local/`. CPU c? c? t? l? theo m?t core v? to?n m?y; RAM l? working set/private bytes c?a backend c?ng RAM tr?ng host. JTL d?ng timestamp b?t ??u sample d?ng epoch milliseconds v? s? thread th?c t?; manifest ghi m?c b?t ??u workflow ?? ??i chi?u c?c b?c t?i.
+
+Sau ch?y, m? JMX Stress b?ng JMeter GUI, ch?n **Stress - Aggregate Report**, Browse ??n `samples.jtl` c?a ??ng run ch?nh th?c; **kh?ng b?m Start**. M? th?m `html/index.html` v? ki?m tra `postcheck.json`, ??c bi?t s? l?i v? cleanup.
+
+Ki?m tra t?nh: Groovy/PowerShell/Python h?p l?, module resolve ??ng; validator tr?n b?n m? r?ng kh?ng c? finding, v?n `REVIEW_REQUIRED`. Pilot ch?a ch?ng minh t?i 50 VU, l?ch 400 gi?y hay recovery khi forced kill. ?? append [AI Audit](/E:/KiemThu/HW05/audit/audit-report.md); kh?ng s?a SUT, reset database, t?o b?o c?o Markdown ri?ng ho?c commit.
+
+
+## Interaction 10
+
+- **AI Tool:** OpenAI Codex
+- **Date & Time:** 2026-11-19T16:13:25+07:00 ? Asia/Saigon (UTC+07:00)
+
+### Prompt
+
+n?y t?i c? reload m?i tr??ng n?n backend t? t?t gi? t?i ?? b?t l?i r?i
+
+### AI Output
+
+M?nh ?? nh?n th?ng tin backend ???c b?t l?i. M?nh s? l?y baseline m?i v? ki?m tra credentials ? ch? ?? ch? ??c, kh?ng d?ng baseline c?. Pilot s? d?ng 5 Thread Group ? 1 VU trong 30 gi?y, gi? think time v? recovery 60 gi?y; profile ch?nh th?c v?n l? 10?50 VU trong 400 gi?y.

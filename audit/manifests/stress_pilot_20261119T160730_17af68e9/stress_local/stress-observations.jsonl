@@ -1,0 +1,3 @@
+{"timestamp":"2026-11-19T09:07:42.119083100Z","epochMs":1795079262119,"stepName":"MAIN_WORKLOAD_START"}
+{"timestamp":"2026-11-19T09:08:12.002007500Z","stepName":"QUIET_RECOVERY_START","softFailures":0,"stoppedBySafetyGuard":false}
+{"timestamp":"2026-11-19T09:09:12.008964800Z","stepName":"QUIET_RECOVERY_END"}

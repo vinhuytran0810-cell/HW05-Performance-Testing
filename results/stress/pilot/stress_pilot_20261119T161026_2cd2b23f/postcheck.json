@@ -1,0 +1,123 @@
+{
+  "kind": "stress_task1_postcheck",
+  "checkedAt": "2026-11-19T09:12:11.745744+00:00",
+  "runId": "stress_pilot_20261119T161026_2cd2b23f",
+  "mode": "pilot",
+  "status": "ARTIFACTS_AND_CLEANUP_VERIFIED_NOT_SLA_PASS",
+  "checks": {
+    "hashesUnchanged": true,
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "adminCleanUnchanged": true,
+    "nativeExitZero": true,
+    "sameBackend": true,
+    "monitorCompleted": true,
+    "dashboardExists": true,
+    "onlyExpectedHttpLabels": true,
+    "fiveLabelsPresent": true,
+    "timestampAndThreadsPresent": true,
+    "noSensitiveJtlColumns": true,
+    "safeDashboardMessages": true,
+    "manifestBaselineMatchesPreflight": true,
+    "manifestOwnershipCorrelation": true,
+    "atLeastOneCompleteIteration": true,
+    "cleanupVerified": true,
+    "noSafetyGuardStop": true,
+    "resourcesPresent": true,
+    "noMonitorAlert": true,
+    "pilotFiveCohortsComplete": true,
+    "pilotNoHttpOrAssertionFailure": true,
+    "noKnownSecrets": true
+  },
+  "issues": [],
+  "rawJtlSHA256": "d26b34c2a96f87e0f6316931ebb39a36c5a9cf91617e4b7672f89beabc3eaeaf",
+  "jtlColumns": [
+    "timeStamp",
+    "elapsed",
+    "label",
+    "responseCode",
+    "responseMessage",
+    "threadName",
+    "dataType",
+    "success",
+    "bytes",
+    "sentBytes",
+    "grpThreads",
+    "allThreads",
+    "Latency",
+    "IdleTime",
+    "Connect"
+  ],
+  "samples": 385,
+  "failedSamples": 0,
+  "httpNon200Samples": 0,
+  "failed200Samples": 0,
+  "byLabel": {
+    "01_Admin_Login": 77,
+    "02_View_Categories": 77,
+    "03_Create_Category": 77,
+    "04_Delete_Category": 77,
+    "05_Verify_Category_Deletion": 77
+  },
+  "ownedIntents": 77,
+  "completeWorkloadIterations": 77,
+  "workersObserved": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "completeWorkers": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "cleanupResult": {
+    "stepName": "RECOVERY_RESULT",
+    "timestamp": "2026-11-19T09:12:08.140449100Z",
+    "cleanupStatus": "VERIFIED",
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "ownedAbsent": true,
+    "adminAfter": {
+      "id": 1,
+      "role": "admin",
+      "login_attempts": 0,
+      "locked_until": null
+    },
+    "unresolvedIntents": [],
+    "recoveryDeletes": 0,
+    "quiescenceAcknowledged": false
+  },
+  "runSummary": {
+    "timestamp": "2026-11-19T09:12:08.142448100Z",
+    "stepName": "RUN_SUMMARY",
+    "performanceStatus": "SCHEDULE_FINISHED_NOT_A_PERFORMANCE_PASS",
+    "cleanupStatus": "VERIFIED"
+  },
+  "softPreMutationFailures": 0,
+  "mainAnchorEpochMs": 1795079438036,
+  "anchorDefinition": "First workflow gate, approximate schedule origin; actual active threads retained per sample.",
+  "activeThreadsObserved": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "nominal80SecondStageSampleCounts": null,
+  "resourceSampleCount": 93,
+  "secretScan": {
+    "filesScanned": 143,
+    "findings": []
+  },
+  "limitations": [
+    "Error counts come from raw JTL, independently of safety abort/performanceStatus.",
+    "No SLA/capacity verdict.",
+    "Secret scan is not universal.",
+    "Pilot does not validate 50VU,400s schedule or forced-stop paths."
+  ]
+}

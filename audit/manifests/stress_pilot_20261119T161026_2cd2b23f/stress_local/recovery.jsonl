@@ -1,0 +1,2 @@
+{"stepName":"RECOVERY_RESULT","timestamp":"2026-11-19T09:12:08.140449100Z","cleanupStatus":"VERIFIED","categoriesUnchanged":true,"productsUnchanged":true,"ownedAbsent":true,"adminAfter":{"id":1,"role":"admin","login_attempts":0,"locked_until":null},"unresolvedIntents":[],"recoveryDeletes":0,"quiescenceAcknowledged":false}
+{"timestamp":"2026-11-19T09:12:08.142448100Z","stepName":"RUN_SUMMARY","performanceStatus":"SCHEDULE_FINISHED_NOT_A_PERFORMANCE_PASS","cleanupStatus":"VERIFIED"}
