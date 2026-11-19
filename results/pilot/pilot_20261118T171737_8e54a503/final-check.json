@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-18T10:28:43.883895+00:00",
+  "sampleKindConfirmed": "five main HTTP sampler labels only; no control/transaction samples",
+  "samples": 45,
+  "failures": 0,
+  "sampleSpanSeconds": 12.501,
+  "resourceSummary": {
+    "rows": 20,
+    "minimumFreeRAMMiB": 3210,
+    "maximumJMeterWorkingSetMiB": 421.11,
+    "backendAliveInEverySample": true
+  },
+  "jmeterLogErrorWarnLines": 1,
+  "dashboardGenerated": true,
+  "sourceConfigUnchangedAfterDiagnostic": true,
+  "rawJtlPreserved": true,
+  "warnings": [
+    "PowerShell launcher ExitCode was null; not reported as zero. Completion assessed from JTL, manifest, log end-of-run and generated dashboard.",
+    "One log-inspection command hit console UnicodeEncodeError; reread using JSON escaped text. Raw logs/JTL were not modified; not a SUT failure."
+  ]
+}

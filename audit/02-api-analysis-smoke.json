@@ -1,0 +1,203 @@
+{
+  "startedAt": "2026-11-17T09:11:51.729Z",
+  "kind": "sequential-functional-smoke",
+  "steps": [
+    {
+      "name": "API Login",
+      "status": 200,
+      "tokenPresent": true
+    },
+    {
+      "name": "API Product Listing",
+      "status": 200,
+      "count": 5,
+      "productIds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "Backend cart baseline",
+      "status": 200,
+      "count": 0
+    },
+    {
+      "name": "Missing route probe",
+      "method": "PUT",
+      "endpoint": "/api/cart",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "defaultCannotResponse": true
+    },
+    {
+      "name": "Missing route probe",
+      "method": "DELETE",
+      "endpoint": "/api/cart/1",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "defaultCannotResponse": true
+    },
+    {
+      "name": "Missing route probe",
+      "method": "PUT",
+      "endpoint": "/api/cart/1",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "defaultCannotResponse": true
+    },
+    {
+      "name": "Missing route probe",
+      "method": "DELETE",
+      "endpoint": "/api/cart",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "defaultCannotResponse": true
+    },
+    {
+      "name": "Missing token check",
+      "status": 401,
+      "body": {
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "name": "Invalid token check",
+      "status": 403,
+      "body": {
+        "error": "Forbidden"
+      }
+    },
+    {
+      "name": "UI Login and Product Listing",
+      "pass": true
+    },
+    {
+      "name": "UI Add to Cart",
+      "pass": true,
+      "rows": 1,
+      "row": [
+        "iPhone 15 Pro Max",
+        "30,000,000 ₫",
+        "1",
+        "30,000,000 ₫",
+        "Xóa"
+      ]
+    },
+    {
+      "name": "UI Update Cart",
+      "result": "BLOCKED_MISSING_FUNCTION",
+      "numberInputs": 0,
+      "buttons": [
+        "Xóa"
+      ]
+    },
+    {
+      "name": "UI Remove from Cart",
+      "pass": true,
+      "rows": 0
+    },
+    {
+      "name": "UI View Cart",
+      "pass": true,
+      "emptyMessage": "Giỏ hàng của bạn đang trống\nTiếp tục mua sắm"
+    },
+    {
+      "name": "UI Cleanup",
+      "emptyCartConfirmed": true,
+      "loggedOut": true
+    },
+    {
+      "name": "Final backend cart verification",
+      "status": 200,
+      "unchanged": true,
+      "count": 0
+    }
+  ],
+  "limitations": [
+    "Update Cart missing in web frontend and backend; full six-step workflow cannot pass.",
+    "POST /api/cart deliberately not executed: no supported cleanup endpoint and restarting/resetting SUT prohibited.",
+    "Missing-route probes use candidate paths, not documented supported endpoints.",
+    "No failed login or lockout timing tests; lockout conclusions are source-based."
+  ],
+  "sourceBefore": {
+    "backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+    "backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717",
+    "backend/package-lock.json": "15663a68dea9ceb74b8c0ebb6078f7637977c5368b4f175a10112214f003f205",
+    "frontend-web/src/context/CartContext.jsx": "9183a9c420522f26954aa995105100ae88070a2143ff2ccbe9e6163b4a1c104d",
+    "frontend-web/src/context/AuthContext.jsx": "562a306cbeaae152a5ebaf2f9feaf75a0da9f78618b798668ce1491ef0b4e968",
+    "frontend-web/package-lock.json": "3a2f77044ea23f8aabcfeda91ce374bf04f8e5cd719171756ec6436df7b42608"
+  },
+  "demoUserId": 2,
+  "accountBefore": {
+    "login_attempts": 0,
+    "locked_until": null
+  },
+  "jwtClaims": {
+    "id": 2,
+    "role": "user",
+    "iatPresent": true,
+    "expPresent": false
+  },
+  "selectedProduct": {
+    "id": 1,
+    "name": "iPhone 15 Pro Max",
+    "price": 30000000,
+    "quantity": 1
+  },
+  "browser": "Chrome/157.0.8103.78",
+  "browserApiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/login"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/login"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/me"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/products"
+    },
+    {
+      "method": "GET",
+      "path": "/api/products"
+    },
+    {
+      "method": "GET",
+      "path": "/api/products"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/products"
+    }
+  ],
+  "frontendCartApiRequests": [],
+  "accountAfter": {
+    "login_attempts": 0,
+    "locked_until": null
+  },
+  "accountStateUnchanged": true,
+  "executionCompleted": true,
+  "temporaryProfileRemoved": true,
+  "sourceAfter": {
+    "backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+    "backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717",
+    "backend/package-lock.json": "15663a68dea9ceb74b8c0ebb6078f7637977c5368b4f175a10112214f003f205",
+    "frontend-web/src/context/CartContext.jsx": "9183a9c420522f26954aa995105100ae88070a2143ff2ccbe9e6163b4a1c104d",
+    "frontend-web/src/context/AuthContext.jsx": "562a306cbeaae152a5ebaf2f9feaf75a0da9f78618b798668ce1491ef0b4e968",
+    "frontend-web/package-lock.json": "3a2f77044ea23f8aabcfeda91ce374bf04f8e5cd719171756ec6436df7b42608"
+  },
+  "sourceUnchanged": true,
+  "finishedAt": "2026-11-17T09:11:54.283Z"
+}

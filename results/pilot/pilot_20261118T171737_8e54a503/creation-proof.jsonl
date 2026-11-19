@@ -1,0 +1,6 @@
+{"timestamp": "2026-11-18T10:26:50.337964+00:00", "stepName": "CREATE_INTENT", "categoryName": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4"}
+{"timestamp": "2026-11-18T10:26:50.345963+00:00", "stepName": "CREATE_RESPONSE", "categoryName": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4", "actualId": 13, "status": 200}
+{"timestamp": "2026-11-18T10:26:50.348963+00:00", "stepName": "GET_PROVED_EXISTENCE", "categoryName": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4", "actualId": 13, "observedRecord": {"id": 13, "name": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4"}, "status": 200}
+{"timestamp": "2026-11-18T10:26:50.377103+00:00", "stepName": "GUARDED_DELETE_INTENT", "categoryName": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4", "actualId": 13}
+{"timestamp": "2026-11-18T10:26:50.383133+00:00", "stepName": "DELETE_ACKNOWLEDGED", "categoryName": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4", "actualId": 13, "status": 200}
+{"timestamp": "2026-11-18T10:26:50.386143+00:00", "stepName": "ABSENCE_VERIFIED", "categoryName": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4", "actualId": 13, "status": 200}

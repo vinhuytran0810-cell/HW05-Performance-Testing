@@ -1,0 +1,90 @@
+{
+  "kind": "load_task1_postcheck",
+  "checkedAt": "2026-11-19T07:37:33.205773+00:00",
+  "runId": "load_20261119T143412_ffe7cbc2",
+  "status": "FUNCTIONAL_AND_CLEANUP_VERIFIED_NOT_SLA_PASS",
+  "checks": {
+    "hashesUnchanged": true,
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "adminUnchangedAndClean": true,
+    "nativeExitZero": true,
+    "backendProcessUnchanged": true,
+    "resourceMonitorCompleted": true,
+    "backendResourceEvidencePresent": true,
+    "noBackendRestartAlert": true,
+    "fiveHttpLabelsPresent": true,
+    "allHttpAndAssertionsSuccessful": true,
+    "noSensitiveJtlColumns": true,
+    "atLeastOneCompleteIteration": true,
+    "manifestCorrelationConsistent": true,
+    "cleanupVerified": true,
+    "scheduleNotStoppedByGuard": true,
+    "dashboardExists": true,
+    "noKnownSecretsDetected": true
+  },
+  "limitations": [
+    "No SLA pass, capacity estimate, bottleneck diagnosis or Task 2 analysis.",
+    "A passing postcheck does not test forced-stop/timeout recovery.",
+    "Secret scan covers known credentials, JWT patterns and JTL columns; it is not universal."
+  ],
+  "resourceSampleCount": 179,
+  "rawJtlSHA256": "b614c8bb063b52d268cd83b704dfb4d4be4e5df87b8aaa2912da11123972501f",
+  "jtlColumns": [
+    "timeStamp",
+    "elapsed",
+    "label",
+    "responseCode",
+    "responseMessage",
+    "threadName",
+    "dataType",
+    "success",
+    "bytes",
+    "sentBytes",
+    "grpThreads",
+    "allThreads",
+    "URL",
+    "Latency",
+    "IdleTime",
+    "Connect"
+  ],
+  "samples": 5595,
+  "byLabel": {
+    "01_Admin_Login": 1119,
+    "02_View_Categories": 1119,
+    "03_Create_Category": 1119,
+    "04_Delete_Category": 1119,
+    "05_Verify_Category_Deletion": 1119
+  },
+  "failedSamples": 0,
+  "ownedIntents": 1119,
+  "completeWorkloadIterations": 1119,
+  "cleanupResult": {
+    "stepName": "RECOVERY_RESULT",
+    "timestamp": "2026-11-19T07:37:29.853168800Z",
+    "cleanupStatus": "VERIFIED",
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "ownedAbsent": true,
+    "adminAfter": {
+      "id": 1,
+      "role": "admin",
+      "login_attempts": 0,
+      "locked_until": null
+    },
+    "unresolvedIntents": [],
+    "recoveryDeletes": 0,
+    "quiescenceAcknowledged": false
+  },
+  "runSummary": {
+    "timestamp": "2026-11-19T07:37:29.856151500Z",
+    "stepName": "RUN_SUMMARY",
+    "performanceStatus": "SCHEDULE_FINISHED_NOT_A_PERFORMANCE_PASS",
+    "cleanupStatus": "VERIFIED"
+  },
+  "secretScan": {
+    "filesScanned": 147,
+    "findings": []
+  },
+  "issues": []
+}

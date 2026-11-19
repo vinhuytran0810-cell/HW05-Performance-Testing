@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-11-18T10:26:50.391143+00:00",
+  "categories": [
+    {
+      "id": 1,
+      "name": "Điện thoại"
+    },
+    {
+      "id": 2,
+      "name": "Laptop"
+    },
+    {
+      "id": 3,
+      "name": "Phụ kiện"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "iPhone 15 Pro Max",
+      "price": 30000000,
+      "description": "Điện thoại cao cấp của Apple",
+      "imageUrl": "https://placehold.co/300x300/png?text=iPhone+15",
+      "category_id": 1
+    },
+    {
+      "id": 2,
+      "name": "Samsung Galaxy S24 Ultra",
+      "price": 28000000,
+      "description": "Màn hình hiển thị xuất sắc, camera siêu zoom",
+      "imageUrl": "https://placehold.co/300x300/png?text=Samsung+S24",
+      "category_id": 1
+    },
+    {
+      "id": 3,
+      "name": "MacBook Pro M3",
+      "price": 45000000,
+      "description": "Laptop chuyên nghiệp mạnh mẽ",
+      "imageUrl": "https://placehold.co/300x300/png?text=Macbook+Pro",
+      "category_id": 2
+    },
+    {
+      "id": 4,
+      "name": "Tai nghe AirPods Pro 2",
+      "price": 6000000,
+      "description": "Chống ồn chủ động xuất sắc",
+      "imageUrl": "https://placehold.co/300x300/png?text=AirPods+Pro",
+      "category_id": 3
+    },
+    {
+      "id": 5,
+      "name": "Bàn phím cơ Keychron Q1",
+      "price": 4000000,
+      "description": "Gõ cực sướng, thiết kế kim loại",
+      "imageUrl": "https://placehold.co/300x300/png?text=Keychron+Q1",
+      "category_id": 3
+    }
+  ],
+  "admin": {
+    "id": 1,
+    "role": "admin",
+    "login_attempts": 0,
+    "locked_until": null
+  },
+  "categorySequence": 13
+}

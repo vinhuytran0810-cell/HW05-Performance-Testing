@@ -1,0 +1,338 @@
+{
+  "file": "results\\pilot\\pilot_20261118T171737_8e54a503\\samples.jtl",
+  "sha256": "ca7c8753d5fbc1eb56c794fd86221a52e0321c7a75485cf865120e1386a8c001",
+  "sample_kind_user_declared": "http",
+  "timestamp_mode": "start",
+  "window_start_ms": 1794997290238,
+  "window_end_ms": 1794997302739,
+  "window_seconds": 12.501,
+  "window_policy": "selected sample span",
+  "percentile_method": "linear interpolation (n-1)*p",
+  "includes_failed_samples": true,
+  "all_label_counts": {
+    "01_Admin_Login": 9,
+    "02_View_Categories": 9,
+    "03_Create_Category": 9,
+    "04_Delete_Category": 9,
+    "05_Verify_Category_Deletion": 9
+  },
+  "warnings": [
+    "Parent/child type cannot be inferred reliably; verify sample kind. Buckets use sample start, not completion. Empty buckets omitted."
+  ],
+  "by_label": {
+    "01_Admin_Login": {
+      "samples": 9,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 0.7199424046076314,
+      "elapsed_ms": {
+        "min": 2,
+        "max": 28,
+        "mean": 5,
+        "median": 2.0,
+        "p90": 8.000000000000004,
+        "p95": 17.999999999999993,
+        "p99": 26.0
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 1,
+        "max": 28,
+        "mean": 4.777777777777778,
+        "median": 2.0,
+        "p90": 7.200000000000005,
+        "p95": 17.59999999999999,
+        "p99": 25.919999999999998
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 20,
+        "mean": 2.2222222222222223,
+        "median": 0.0,
+        "p90": 4.0000000000000036,
+        "p95": 11.999999999999993,
+        "p99": 18.4
+      }
+    },
+    "02_View_Categories": {
+      "samples": 9,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 0.7199424046076314,
+      "elapsed_ms": {
+        "min": 1,
+        "max": 2,
+        "mean": 1.1111111111111112,
+        "median": 1.0,
+        "p90": 1.2000000000000002,
+        "p95": 1.5999999999999996,
+        "p99": 1.92
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 1,
+        "max": 2,
+        "mean": 1.1111111111111112,
+        "median": 1.0,
+        "p90": 1.2000000000000002,
+        "p95": 1.5999999999999996,
+        "p99": 1.92
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "median": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "03_Create_Category": {
+      "samples": 9,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 0.7199424046076314,
+      "elapsed_ms": {
+        "min": 4,
+        "max": 7,
+        "mean": 5.222222222222222,
+        "median": 5.0,
+        "p90": 6.2,
+        "p95": 6.6,
+        "p99": 6.92
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 4,
+        "max": 7,
+        "mean": 5.111111111111111,
+        "median": 5.0,
+        "p90": 5.4,
+        "p95": 6.199999999999999,
+        "p99": 6.84
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "median": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "04_Delete_Category": {
+      "samples": 9,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 0.7199424046076314,
+      "elapsed_ms": {
+        "min": 4,
+        "max": 7,
+        "mean": 4.888888888888889,
+        "median": 5.0,
+        "p90": 5.4,
+        "p95": 6.199999999999999,
+        "p99": 6.84
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 4,
+        "max": 7,
+        "mean": 4.777777777777778,
+        "median": 5.0,
+        "p90": 5.4,
+        "p95": 6.199999999999999,
+        "p99": 6.84
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "median": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    "05_Verify_Category_Deletion": {
+      "samples": 9,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 0.7199424046076314,
+      "elapsed_ms": {
+        "min": 1,
+        "max": 1,
+        "mean": 1,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "p99": 1.0
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 1,
+        "max": 1,
+        "mean": 1,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "p99": 1.0
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "median": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    }
+  },
+  "overall": {
+    "samples": 45,
+    "failures": 0,
+    "error_percent": 0.0,
+    "samples_per_second": 3.599712023038157,
+    "elapsed_ms": {
+      "min": 1,
+      "max": 28,
+      "mean": 3.4444444444444446,
+      "median": 2.0,
+      "p90": 5.0,
+      "p95": 6.799999999999997,
+      "p99": 18.760000000000048
+    },
+    "failed_response_codes": {},
+    "Latency_ms": {
+      "min": 1,
+      "max": 28,
+      "mean": 3.3555555555555556,
+      "median": 2.0,
+      "p90": 5.0,
+      "p95": 6.599999999999994,
+      "p99": 18.760000000000048
+    },
+    "Connect_ms": {
+      "min": 0,
+      "max": 20,
+      "mean": 0.4444444444444444,
+      "median": 0.0,
+      "p90": 0.0,
+      "p95": 0.0,
+      "p99": 11.200000000000045
+    }
+  },
+  "buckets": [
+    {
+      "start_ms": 1794997290238,
+      "end_ms": 1794997295238,
+      "samples": 15,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 3.0,
+      "elapsed_ms": {
+        "min": 1,
+        "max": 28,
+        "mean": 4.8,
+        "median": 2.0,
+        "p90": 7.0,
+        "p95": 13.299999999999978,
+        "p99": 25.059999999999988
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 1,
+        "max": 28,
+        "mean": 4.8,
+        "median": 2.0,
+        "p90": 7.0,
+        "p95": 13.299999999999978,
+        "p99": 25.059999999999988
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 20,
+        "mean": 1.3333333333333333,
+        "median": 0.0,
+        "p90": 0.0,
+        "p95": 5.999999999999979,
+        "p99": 17.19999999999999
+      }
+    },
+    {
+      "start_ms": 1794997295238,
+      "end_ms": 1794997300238,
+      "samples": 20,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 4.0,
+      "elapsed_ms": {
+        "min": 1,
+        "max": 6,
+        "mean": 2.85,
+        "median": 2.0,
+        "p90": 5.0,
+        "p95": 5.050000000000001,
+        "p99": 5.809999999999999
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 1,
+        "max": 5,
+        "mean": 2.7,
+        "median": 2.0,
+        "p90": 5.0,
+        "p95": 5.0,
+        "p99": 5.0
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "median": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    },
+    {
+      "start_ms": 1794997300238,
+      "end_ms": 1794997302739,
+      "samples": 10,
+      "failures": 0,
+      "error_percent": 0.0,
+      "samples_per_second": 3.9984006397441023,
+      "elapsed_ms": {
+        "min": 1,
+        "max": 5,
+        "mean": 2.6,
+        "median": 2.0,
+        "p90": 5.0,
+        "p95": 5.0,
+        "p99": 5.0
+      },
+      "failed_response_codes": {},
+      "Latency_ms": {
+        "min": 1,
+        "max": 5,
+        "mean": 2.5,
+        "median": 1.5,
+        "p90": 5.0,
+        "p95": 5.0,
+        "p99": 5.0
+      },
+      "Connect_ms": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "median": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      }
+    }
+  ]
+}

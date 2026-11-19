@@ -1,0 +1,111 @@
+{
+  "kind": "pilot_validation",
+  "checkedAt": "2026-11-18T10:26:50.318963+00:00",
+  "runId": "pilot_20261118T171737_8e54a503",
+  "source": "actual JTL/manifest, read-only DB, independent API reads and explicit out-of-measurement creation proof",
+  "warnings": [
+    "PowerShell launcher ExitCode was null; not reported as zero. Completion assessed from JTL, manifest, log end-of-run and generated dashboard.",
+    "One log-inspection command hit console UnicodeEncodeError; reread using JSON escaped text. Raw logs/JTL were not modified; not a SUT failure."
+  ],
+  "backendProcessUnchanged": true,
+  "hashesAfter": {
+    "test-plans/23120274_Load_20261118.jmx": "3b63a24f3e36b469fb3eca4b983019eb69b462a9feea7e7f2ec9bc910ecca261",
+    "scripts/category-load-support.groovy": "fc05672162cf5a28df0a35a0e9b6869e10811e74d27a8022a7dd43be6224f995",
+    "scripts/recover-category-load.groovy": "6849ef3de5437900083300def23c44b7e0776b45fc5e0c7bd83db0c892e962ec",
+    "data/categories.csv": "c237523a3f44a5d1471b3d4483bcb25c76495e9972e6a0f2b6bf9bec0dc1a23e",
+    "eshop-sut/backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+    "eshop-sut/backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717"
+  },
+  "sourceConfigCsvUnchanged": true,
+  "jtlSecretScan": {
+    "status": "PASS",
+    "findingCategories": [],
+    "columns": [
+      "timeStamp",
+      "elapsed",
+      "label",
+      "responseCode",
+      "responseMessage",
+      "threadName",
+      "dataType",
+      "success",
+      "bytes",
+      "sentBytes",
+      "grpThreads",
+      "allThreads",
+      "URL",
+      "Latency",
+      "IdleTime",
+      "Connect"
+    ],
+    "sha256": "ca7c8753d5fbc1eb56c794fd86221a52e0321c7a75485cf865120e1386a8c001",
+    "method": "exact in-memory credential matching, JWT/Authorization patterns, column and URL inspection; not a universal secret detector"
+  },
+  "httpSamples": 45,
+  "failedSamples": 0,
+  "byLabel": {
+    "01_Admin_Login": 9,
+    "02_View_Categories": 9,
+    "03_Create_Category": 9,
+    "04_Delete_Category": 9,
+    "05_Verify_Category_Deletion": 9
+  },
+  "fullHttpIterations": 9,
+  "manifest": {
+    "intentCount": 9,
+    "completeChains": 9,
+    "createIds": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "stepCounts": {
+      "CREATE_INTENT": 9,
+      "CREATE_CONFIRMED": 9,
+      "DELETE_INTENT": 9,
+      "DELETE_ACKNOWLEDGED": 9,
+      "ABSENCE_VERIFIED": 9
+    },
+    "cleanupResult": {
+      "stepName": "RECOVERY_RESULT",
+      "timestamp": "2026-11-18T10:21:42.802007700Z",
+      "cleanupStatus": "VERIFIED",
+      "categoriesUnchanged": true,
+      "productsUnchanged": true,
+      "ownedAbsent": true,
+      "adminAfter": {
+        "id": 1,
+        "role": "admin",
+        "login_attempts": 0,
+        "locked_until": null
+      },
+      "unresolvedIntents": [],
+      "recoveryDeletes": 0,
+      "quiescenceAcknowledged": false
+    }
+  },
+  "postPilotBaselineVerified": true,
+  "creationProof": {
+    "outsideMeasurement": true,
+    "actualExistenceProved": true,
+    "actualId": 13,
+    "categoryName": "HW05_PILOT_PROOF_bf549463c58a4706a2510846f503a0d4",
+    "cleanupVerified": true,
+    "proofFile": "creation-proof.jsonl",
+    "note": "Direct GET evidence applies to one additional diagnostic insertion after JMeter. Measured iterations are supported by actual Create responses/ID correlation and manifest chains; no read-after-create GET was added inside the five-request workflow."
+  },
+  "finalBaselineVerified": true,
+  "artifactSecretScan": {
+    "filesScanned": 140,
+    "findings": [],
+    "status": "PASS"
+  },
+  "status": "PILOT_VALIDATION_PASS",
+  "finishedAt": "2026-11-18T10:26:52.074485+00:00"
+}

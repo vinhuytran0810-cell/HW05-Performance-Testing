@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-17T09:59:38.965Z",
+  "timezone": "Asia/Saigon",
+  "kind": "controlled-sequential-api-smoke",
+  "baseUrl": "http://localhost:3000",
+  "temporaryCategoryName": "HW05_SMOKE_1794909578964_006f0ee4168b477cbdfd5c6edaf78cad",
+  "steps": [
+    {
+      "timestamp": "2026-11-17T09:59:39.024Z",
+      "name": "Preflight",
+      "backendReachable": true,
+      "categories": 3,
+      "products": 5,
+      "adminUnlocked": true
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.030Z",
+      "name": "1 Admin Login",
+      "status": 200,
+      "userId": 1,
+      "role": "admin",
+      "tokenPresent": true,
+      "expPresent": false
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.033Z",
+      "name": "2 View Categories",
+      "status": 200,
+      "count": 3,
+      "baselineMatches": true
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.036Z",
+      "name": "Diagnostic public GET",
+      "status": 200,
+      "count": 3
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.039Z",
+      "name": "Diagnostic Create without JWT",
+      "status": 401,
+      "body": {
+        "error": "Unauthorized"
+      }
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.042Z",
+      "name": "Diagnostic Create invalid JWT",
+      "status": 403,
+      "body": {
+        "error": "Forbidden"
+      }
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.049Z",
+      "name": "HW05_SMOKE_1794909578964_006f0ee4168b477cbdfd5c6edaf78cad",
+      "status": 200,
+      "body": {
+        "message": "Category created",
+        "id": 4
+      }
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.052Z",
+      "name": "HW05_SMOKE_1794909578964_006f0ee4168b477cbdfd5c6edaf78cad",
+      "status": 200,
+      "id": 4,
+      "existsExactlyOnce": true,
+      "count": 4,
+      "originalCategoriesUnchanged": true
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.054Z",
+      "name": "Diagnostic Delete without JWT",
+      "status": 401,
+      "body": {
+        "error": "Unauthorized"
+      },
+      "id": 4
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.063Z",
+      "name": "4 Delete Category",
+      "status": 200,
+      "body": {
+        "message": "Category deleted"
+      },
+      "id": 4
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.067Z",
+      "name": "5 Verify Category Deletion",
+      "status": 200,
+      "absent": true,
+      "count": 3
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.069Z",
+      "name": "Diagnostic Delete already-deleted owned ID",
+      "status": 200,
+      "body": {
+        "message": "Category deleted"
+      },
+      "id": 4,
+      "absentBeforeRequest": true
+    },
+    {
+      "timestamp": "2026-11-17T09:59:39.073Z",
+      "name": "Finally guarded cleanup",
+      "result": "ALREADY_ABSENT",
+      "id": 4
+    }
+  ],
+  "cleanup": {
+    "attempted": true,
+    "verified": true
+  },
+  "limitations": [
+    "No ordinary-user role-bypass mutation, invalid-name insertion, duplicate insertion or referenced-category deletion was executed; conclusions use handler/schema inspection.",
+    "No incorrect administrator password, lockout timing, backend restart, load or concurrency test.",
+    "Deleting the temporary category preserves original records but does not rewind SQLite AUTOINCREMENT or database file metadata.",
+    "Create timeout reconciliation is implemented; its timeout branch was not intentionally triggered."
+  ],
+  "sourceHashesBefore": {
+    "eshop-sut/backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+    "eshop-sut/backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717",
+    "eshop-sut/frontend-admin/src/App.jsx": "f43a7ed720eb2608563ab5329edc2858f4aab913ecfb57784b30a467803c5b5f",
+    "eshop-sut/api_specification.md": "488cbcb790099ba9cbb34c7c80ba04c6aec9e9ebb598f031ffa575737547b139",
+    "eshop-sut/README.md": "7859599624a8f94e7b28859f5e3edbee71f275e1a71043e3efcab10d5ee14cdd"
+  },
+  "previousReportHashesBefore": {
+    "reports/task1/01-environment.md": "1e1f2f029ab9378731d4fc49a82f91c13e6a2fdf9d3b48ba965bcb0c5eb7179d",
+    "reports/task1/02-api-analysis.md": "53e7f20f4cd273dfc04368da67080494185f67b3d172fcb75c7d1b4783a55fbe"
+  },
+  "baselineBefore": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Điện thoại"
+      },
+      {
+        "id": 2,
+        "name": "Laptop"
+      },
+      {
+        "id": 3,
+        "name": "Phụ kiện"
+      }
+    ],
+    "products": [
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "description": "Điện thoại cao cấp của Apple",
+        "imageUrl": "https://placehold.co/300x300/png?text=iPhone+15",
+        "category_id": 1
+      },
+      {
+        "id": 2,
+        "name": "Samsung Galaxy S24 Ultra",
+        "price": 28000000,
+        "description": "Màn hình hiển thị xuất sắc, camera siêu zoom",
+        "imageUrl": "https://placehold.co/300x300/png?text=Samsung+S24",
+        "category_id": 1
+      },
+      {
+        "id": 3,
+        "name": "MacBook Pro M3",
+        "price": 45000000,
+        "description": "Laptop chuyên nghiệp mạnh mẽ",
+        "imageUrl": "https://placehold.co/300x300/png?text=Macbook+Pro",
+        "category_id": 2
+      },
+      {
+        "id": 4,
+        "name": "Tai nghe AirPods Pro 2",
+        "price": 6000000,
+        "description": "Chống ồn chủ động xuất sắc",
+        "imageUrl": "https://placehold.co/300x300/png?text=AirPods+Pro",
+        "category_id": 3
+      },
+      {
+        "id": 5,
+        "name": "Bàn phím cơ Keychron Q1",
+        "price": 4000000,
+        "description": "Gõ cực sướng, thiết kế kim loại",
+        "imageUrl": "https://placehold.co/300x300/png?text=Keychron+Q1",
+        "category_id": 3
+      }
+    ]
+  },
+  "adminBefore": {
+    "id": 1,
+    "role": "admin",
+    "login_attempts": 0,
+    "locked_until": null
+  },
+  "databaseSchema": {
+    "categories": [
+      {
+        "cid": 0,
+        "name": "id",
+        "type": "INTEGER",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 1
+      },
+      {
+        "cid": 1,
+        "name": "name",
+        "type": "TEXT",
+        "notnull": 0,
+        "dflt_value": null,
+        "pk": 0
+      }
+    ],
+    "categoryIndexes": [],
+    "productForeignKeys": []
+  },
+  "categorySequenceBefore": {
+    "seq": 3
+  },
+  "createAttemptedAt": "2026-11-17T09:59:39.042Z",
+  "createdCategoryId": 4,
+  "fiveStepWorkflowPassed": true,
+  "baselineAfter": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Điện thoại"
+      },
+      {
+        "id": 2,
+        "name": "Laptop"
+      },
+      {
+        "id": 3,
+        "name": "Phụ kiện"
+      }
+    ],
+    "products": [
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "description": "Điện thoại cao cấp của Apple",
+        "imageUrl": "https://placehold.co/300x300/png?text=iPhone+15",
+        "category_id": 1
+      },
+      {
+        "id": 2,
+        "name": "Samsung Galaxy S24 Ultra",
+        "price": 28000000,
+        "description": "Màn hình hiển thị xuất sắc, camera siêu zoom",
+        "imageUrl": "https://placehold.co/300x300/png?text=Samsung+S24",
+        "category_id": 1
+      },
+      {
+        "id": 3,
+        "name": "MacBook Pro M3",
+        "price": 45000000,
+        "description": "Laptop chuyên nghiệp mạnh mẽ",
+        "imageUrl": "https://placehold.co/300x300/png?text=Macbook+Pro",
+        "category_id": 2
+      },
+      {
+        "id": 4,
+        "name": "Tai nghe AirPods Pro 2",
+        "price": 6000000,
+        "description": "Chống ồn chủ động xuất sắc",
+        "imageUrl": "https://placehold.co/300x300/png?text=AirPods+Pro",
+        "category_id": 3
+      },
+      {
+        "id": 5,
+        "name": "Bàn phím cơ Keychron Q1",
+        "price": 4000000,
+        "description": "Gõ cực sướng, thiết kế kim loại",
+        "imageUrl": "https://placehold.co/300x300/png?text=Keychron+Q1",
+        "category_id": 3
+      }
+    ]
+  },
+  "comparison": {
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "beforeCategoryHash": "4b77d3b7ae2cb418cfb05128ef2a84f2170fff65c220b40218aee099cace0383",
+    "afterCategoryHash": "4b77d3b7ae2cb418cfb05128ef2a84f2170fff65c220b40218aee099cace0383",
+    "beforeProductHash": "55f8455f177bb2c48db629f7a6b148a0f1996cb9d2481569cb6bfcc2e85c0e1a",
+    "afterProductHash": "55f8455f177bb2c48db629f7a6b148a0f1996cb9d2481569cb6bfcc2e85c0e1a"
+  },
+  "adminAfter": {
+    "id": 1,
+    "role": "admin",
+    "login_attempts": 0,
+    "locked_until": null
+  },
+  "categorySequenceAfter": {
+    "seq": 4
+  },
+  "sourceHashesAfter": {
+    "eshop-sut/backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+    "eshop-sut/backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717",
+    "eshop-sut/frontend-admin/src/App.jsx": "f43a7ed720eb2608563ab5329edc2858f4aab913ecfb57784b30a467803c5b5f",
+    "eshop-sut/api_specification.md": "488cbcb790099ba9cbb34c7c80ba04c6aec9e9ebb598f031ffa575737547b139",
+    "eshop-sut/README.md": "7859599624a8f94e7b28859f5e3edbee71f275e1a71043e3efcab10d5ee14cdd"
+  },
+  "previousReportHashesAfter": {
+    "reports/task1/01-environment.md": "1e1f2f029ab9378731d4fc49a82f91c13e6a2fdf9d3b48ba965bcb0c5eb7179d",
+    "reports/task1/02-api-analysis.md": "53e7f20f4cd273dfc04368da67080494185f67b3d172fcb75c7d1b4783a55fbe"
+  },
+  "sourceUnchanged": true,
+  "previousReportsUnchanged": true,
+  "finishedAt": "2026-11-17T09:59:39.077Z",
+  "executionCompleted": true
+}

@@ -1,0 +1,91 @@
+{
+  "kind": "pilot_preflight",
+  "checkedAt": "2026-11-18T10:17:37.407884+00:00",
+  "runId": "pilot_20261118T171737_8e54a503",
+  "userConfirmedIsolation": true,
+  "plannedWorkload": {
+    "threads": 1,
+    "rampSeconds": 1,
+    "durationSeconds": 15,
+    "thinkMinMs": 1000,
+    "thinkRangeMs": 1000
+  },
+  "freeRAMMiB": 3726,
+  "backendPid": 28068,
+  "backendStartUtc": "2026-11-18T10:08:21.2551596Z",
+  "credentialFileIgnored": true,
+  "hashesBefore": {
+    "test-plans/23120274_Load_20261118.jmx": "3b63a24f3e36b469fb3eca4b983019eb69b462a9feea7e7f2ec9bc910ecca261",
+    "scripts/category-load-support.groovy": "fc05672162cf5a28df0a35a0e9b6869e10811e74d27a8022a7dd43be6224f995",
+    "scripts/recover-category-load.groovy": "6849ef3de5437900083300def23c44b7e0776b45fc5e0c7bd83db0c892e962ec",
+    "data/categories.csv": "c237523a3f44a5d1471b3d4483bcb25c76495e9972e6a0f2b6bf9bec0dc1a23e",
+    "eshop-sut/backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+    "eshop-sut/backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717"
+  },
+  "credentialsMatchedReadOnlyDB": true,
+  "adminBefore": {
+    "id": 1,
+    "role": "admin",
+    "login_attempts": 0,
+    "locked_until": null
+  },
+  "baseline": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Điện thoại"
+      },
+      {
+        "id": 2,
+        "name": "Laptop"
+      },
+      {
+        "id": 3,
+        "name": "Phụ kiện"
+      }
+    ],
+    "products": [
+      {
+        "id": 1,
+        "name": "iPhone 15 Pro Max",
+        "price": 30000000,
+        "description": "Điện thoại cao cấp của Apple",
+        "imageUrl": "https://placehold.co/300x300/png?text=iPhone+15",
+        "category_id": 1
+      },
+      {
+        "id": 2,
+        "name": "Samsung Galaxy S24 Ultra",
+        "price": 28000000,
+        "description": "Màn hình hiển thị xuất sắc, camera siêu zoom",
+        "imageUrl": "https://placehold.co/300x300/png?text=Samsung+S24",
+        "category_id": 1
+      },
+      {
+        "id": 3,
+        "name": "MacBook Pro M3",
+        "price": 45000000,
+        "description": "Laptop chuyên nghiệp mạnh mẽ",
+        "imageUrl": "https://placehold.co/300x300/png?text=Macbook+Pro",
+        "category_id": 2
+      },
+      {
+        "id": 4,
+        "name": "Tai nghe AirPods Pro 2",
+        "price": 6000000,
+        "description": "Chống ồn chủ động xuất sắc",
+        "imageUrl": "https://placehold.co/300x300/png?text=AirPods+Pro",
+        "category_id": 3
+      },
+      {
+        "id": 5,
+        "name": "Bàn phím cơ Keychron Q1",
+        "price": 4000000,
+        "description": "Gõ cực sướng, thiết kế kim loại",
+        "imageUrl": "https://placehold.co/300x300/png?text=Keychron+Q1",
+        "category_id": 3
+      }
+    ]
+  },
+  "status": "READY"
+}
