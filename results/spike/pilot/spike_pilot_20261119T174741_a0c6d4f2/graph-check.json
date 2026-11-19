@@ -1,0 +1,7 @@
+{
+    "kind": "offline_response_time_graph_check",
+    "checkedAt": "2026-11-19T10:48:24.098675Z",
+    "status": "REVIEW_REQUIRED",
+    "noEngineOrSutRequests": true,
+    "reason": "Offline graph load/build failed; inspect preserved raw JTL and local JMeter configuration."
+}

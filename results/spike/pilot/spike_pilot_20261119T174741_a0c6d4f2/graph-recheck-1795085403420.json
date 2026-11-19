@@ -1,0 +1,15 @@
+{
+    "kind": "offline_response_time_graph_check",
+    "checkedAt": "2026-11-19T10:50:03.382749800Z",
+    "status": "REVIEW_REQUIRED",
+    "noEngineOrSutRequests": true,
+    "failureClass": "java.lang.IllegalStateException",
+    "failureFrames": [
+        "jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0",
+        "jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance",
+        "jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance",
+        "java.lang.reflect.Constructor.newInstanceWithCaller",
+        "java.lang.reflect.Constructor.newInstance"
+    ],
+    "reason": "Offline graph load/build failed; inspect preserved raw JTL and local JMeter configuration."
+}

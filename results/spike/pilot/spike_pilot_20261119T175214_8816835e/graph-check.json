@@ -1,0 +1,15 @@
+{
+    "kind": "offline_response_time_graph_check",
+    "checkedAt": "2026-11-19T10:52:56.496029500Z",
+    "status": "RAW_JTL_LOADED_AND_GRAPH_BUILT",
+    "noEngineOrSutRequests": true,
+    "series": 5,
+    "pointsPerSeries": [
+        31,
+        31,
+        31,
+        31,
+        31
+    ],
+    "intervalMs": 1000
+}

@@ -1,0 +1,30 @@
+{
+  "official": {
+    "baseline_threads": 10,
+    "burst_threads": 90,
+    "base_ramp_seconds": 20,
+    "baseline_hold_seconds": 60,
+    "rise_seconds": 3,
+    "peak_hold_seconds": 60,
+    "recovery_seconds": 60,
+    "drain_watchdog_seconds": 30,
+    "burst_start_seconds": 80,
+    "burst_duration_seconds": 63,
+    "burst_stop_seconds": 143,
+    "burst_scheduler_seconds": 95
+  },
+  "pilot": {
+    "baseline_threads": 2,
+    "burst_threads": 4,
+    "base_ramp_seconds": 2,
+    "baseline_hold_seconds": 8,
+    "rise_seconds": 1,
+    "peak_hold_seconds": 10,
+    "recovery_seconds": 10,
+    "drain_watchdog_seconds": 30,
+    "burst_start_seconds": 10,
+    "burst_duration_seconds": 11,
+    "burst_stop_seconds": 21,
+    "burst_scheduler_seconds": 43
+  }
+}

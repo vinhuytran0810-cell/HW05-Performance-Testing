@@ -1,0 +1,126 @@
+{
+    "schema": 1,
+    "createdAt": "2026-11-19T10:52:19.677423400Z",
+    "runId": "spike_pilot_20261119T175214_8816835e",
+    "engineId": "spike_local",
+    "root": "E:\\KiemThu\\HW05",
+    "dir": "E:\\KiemThu\\HW05\\audit\\manifests\\spike_pilot_20261119T175214_8816835e\\spike_local",
+    "baseUrl": "http://localhost:3000",
+    "connectTimeout": 3000,
+    "responseTimeout": 10000,
+    "minFreeMiB": 2048,
+    "adminId": 1,
+    "adminBefore": {
+        "id": 1,
+        "role": "admin",
+        "login_attempts": 0,
+        "locked_until": null
+    },
+    "baselineCategories": [
+        {
+            "id": 1,
+            "name": "\u0110i\u1ec7n tho\u1ea1i"
+        },
+        {
+            "id": 2,
+            "name": "Laptop"
+        },
+        {
+            "id": 3,
+            "name": "Ph\u1ee5 ki\u1ec7n"
+        }
+    ],
+    "baselineProducts": [
+        {
+            "id": 1,
+            "name": "iPhone 15 Pro Max",
+            "price": 30000000,
+            "description": "\u0110i\u1ec7n tho\u1ea1i cao c\u1ea5p c\u1ee7a Apple",
+            "imageUrl": "https://placehold.co/300x300/png?text=iPhone+15",
+            "category_id": 1
+        },
+        {
+            "id": 2,
+            "name": "Samsung Galaxy S24 Ultra",
+            "price": 28000000,
+            "description": "M\u00e0n h\u00ecnh hi\u1ec3n th\u1ecb xu\u1ea5t s\u1eafc, camera si\u00eau zoom",
+            "imageUrl": "https://placehold.co/300x300/png?text=Samsung+S24",
+            "category_id": 1
+        },
+        {
+            "id": 3,
+            "name": "MacBook Pro M3",
+            "price": 45000000,
+            "description": "Laptop chuy\u00ean nghi\u1ec7p m\u1ea1nh m\u1ebd",
+            "imageUrl": "https://placehold.co/300x300/png?text=Macbook+Pro",
+            "category_id": 2
+        },
+        {
+            "id": 4,
+            "name": "Tai nghe AirPods Pro 2",
+            "price": 6000000,
+            "description": "Ch\u1ed1ng \u1ed3n ch\u1ee7 \u0111\u1ed9ng xu\u1ea5t s\u1eafc",
+            "imageUrl": "https://placehold.co/300x300/png?text=AirPods+Pro",
+            "category_id": 3
+        },
+        {
+            "id": 5,
+            "name": "B\u00e0n ph\u00edm c\u01a1 Keychron Q1",
+            "price": 4000000,
+            "description": "G\u00f5 c\u1ef1c s\u01b0\u1edbng, thi\u1ebft k\u1ebf kim lo\u1ea1i",
+            "imageUrl": "https://placehold.co/300x300/png?text=Keychron+Q1",
+            "category_id": 3
+        }
+    ],
+    "baselineHash": "cd3f256a8b730a2d7e1503b348db65e27447104d45d40892e9bf72040c353b76",
+    "sourceHashes": {
+        "eshop-sut/backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+        "eshop-sut/backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717",
+        "eshop-sut/frontend-admin/src/App.jsx": "f43a7ed720eb2608563ab5329edc2858f4aab913ecfb57784b30a467803c5b5f",
+        "data/categories.csv": "c237523a3f44a5d1471b3d4483bcb25c76495e9972e6a0f2b6bf9bec0dc1a23e",
+        "test-plans/23120274_Load_20261118.jmx": "3b63a24f3e36b469fb3eca4b983019eb69b462a9feea7e7f2ec9bc910ecca261",
+        "scripts/category-load-support.groovy": "fc05672162cf5a28df0a35a0e9b6869e10811e74d27a8022a7dd43be6224f995",
+        "scripts/recover-category-load.groovy": "6849ef3de5437900083300def23c44b7e0776b45fc5e0c7bd83db0c892e962ec",
+        "scripts/category-stress-support.groovy": "8dd7091b68cc494337c142c9a597bec45fafcfcd2f6bf7574cf8a7f8013e797d",
+        "test-plans/23120274_Stress_20261119.jmx": "8a82d475da1f24d6edad2d3e73fe0db40bbfb3692fbdef2c6a0d2a774e432b1e",
+        "scripts/run-category-stress.ps1": "5a96cada9d17d6e24fefe2ab13be93a3f295440569ce09ab137ede0f70ff57a9",
+        "scripts/check-category-stress-run.py": "7d7de0447e3c0828998dfb3c44e9947a874badc5ca711626d56a6e760ce6d7bf",
+        "scripts/category-spike-support.groovy": "5b66a2daa05acd6f95c6114ee691a90a24495f26664479998fd380f20c2dcfc2",
+        "test-plans/23120274_Spike_20261119.jmx": "0419041e1a57c08760811bfce9199df073567a476a1fbb3c03433747e8fbe25e",
+        "test-plans/spike-results.properties": "eb07082197898ed90f13318bc5f8b2e06a6755a1221bee465c9653afa14b5162",
+        "data/spike-profiles.json": "4e22530eaf22044a41d207bbe75bfd17f6285fc47d3fd20da0a0c860288394d5",
+        "scripts/run-category-spike.ps1": "3c6677f4a22251a3d5afb11361d08b0461e7e9a466e41032c673af185873d353",
+        "scripts/check-category-spike-run.py": "dc93cfdbbdae77a98573d34a2451afab9ad197ac22e737944be6416c132f9e74",
+        "scripts/check-spike-graph.groovy": "975bc1bffa0fb7ef323d7e91a7f5a47222692c7f78cb722c4e5e3387832bd816"
+    },
+    "workload": {
+        "scenario": "Spike",
+        "mode": "pilot",
+        "profile": {
+            "baseline_threads": 2,
+            "burst_threads": 4,
+            "base_ramp_seconds": 2,
+            "baseline_hold_seconds": 8,
+            "rise_seconds": 1,
+            "peak_hold_seconds": 10,
+            "recovery_seconds": 10,
+            "drain_watchdog_seconds": 30,
+            "burst_start_seconds": 10,
+            "burst_duration_seconds": 11,
+            "burst_stop_seconds": 21
+        },
+        "recoveryStartsAfterObservedBurstDrain": true,
+        "thinkMinMs": 1000,
+        "thinkRangeMs": 1000
+    },
+    "runtimeHardware": {
+        "logicalProcessors": 12,
+        "freeRAMMiB": 3597
+    },
+    "assumptions": [
+        "isolated SUT",
+        "no product/category changes by other actors",
+        "no backend restart",
+        "no read-after-create in measured workflow; exact-name proof deferred to recovery if needed"
+    ]
+}

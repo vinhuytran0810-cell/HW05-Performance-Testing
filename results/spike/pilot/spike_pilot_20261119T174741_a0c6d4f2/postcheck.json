@@ -1,0 +1,182 @@
+{
+  "kind": "spike_task1_postcheck",
+  "checkedAt": "2026-11-19T10:48:26.781038+00:00",
+  "runId": "spike_pilot_20261119T174741_a0c6d4f2",
+  "mode": "pilot",
+  "status": "REVIEW_REQUIRED",
+  "checks": {
+    "hashesUnchanged": true,
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "adminCleanUnchanged": true,
+    "nativeExitZero": true,
+    "sameBackend": true,
+    "monitorCompleted": true,
+    "dashboardExists": true,
+    "responseTimeGraphLoaded": false,
+    "onlyExpectedHttpLabels": true,
+    "fiveLabelsPresent": true,
+    "timestampAndThreadsPresent": true,
+    "noSensitiveJtlColumns": true,
+    "safeDashboardMessages": true,
+    "manifestBaselineMatchesPreflight": true,
+    "manifestOwnershipCorrelation": true,
+    "atLeastOneCompleteIteration": true,
+    "cleanupVerified": true,
+    "noSafetyGuardStop": true,
+    "allThreePhasesPresent": true,
+    "peakActiveThreadsObserved": true,
+    "recoveryDurationRecorded": true,
+    "recoveryAtBaselineVU": true,
+    "workloadMetadataMatches": true,
+    "phaseTaggingMatchesActualTimestamps": true,
+    "cohortNamespaceMatches": true,
+    "cohortMatchesThreadName": true,
+    "responseTimeFieldsValid": true,
+    "resourcesPresent": true,
+    "noMonitorAlert": true,
+    "pilotAllWorkersComplete": true,
+    "pilotNoHttpOrAssertionFailure": true,
+    "noKnownSecrets": true
+  },
+  "issues": [],
+  "rawJtlSHA256": "ebc1aeec54c14960724c25315cc818835f5225381282413b3351f362871a92db",
+  "jtlColumns": [
+    "timeStamp",
+    "elapsed",
+    "label",
+    "responseCode",
+    "responseMessage",
+    "threadName",
+    "dataType",
+    "success",
+    "bytes",
+    "sentBytes",
+    "grpThreads",
+    "allThreads",
+    "Latency",
+    "IdleTime",
+    "Connect",
+    "spike_phase",
+    "spike_cohort",
+    "spike_boundary_crossed"
+  ],
+  "samples": 345,
+  "failedSamples": 0,
+  "httpNon200Samples": 0,
+  "failed200Samples": 0,
+  "byLabel": {
+    "01_Admin_Login": 69,
+    "02_View_Categories": 69,
+    "03_Create_Category": 69,
+    "04_Delete_Category": 69,
+    "05_Verify_Category_Deletion": 69
+  },
+  "ownedIntents": 69,
+  "completeWorkloadIterations": 69,
+  "workersObserved": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "completeWorkers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "cleanupResult": {
+    "stepName": "RECOVERY_RESULT",
+    "timestamp": "2026-11-19T10:48:20.724142400Z",
+    "cleanupStatus": "VERIFIED",
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "ownedAbsent": true,
+    "adminAfter": {
+      "id": 1,
+      "role": "admin",
+      "login_attempts": 0,
+      "locked_until": null
+    },
+    "unresolvedIntents": [],
+    "recoveryDeletes": 0,
+    "quiescenceAcknowledged": false
+  },
+  "runSummary": {
+    "timestamp": "2026-11-19T10:48:20.726140400Z",
+    "stepName": "RUN_SUMMARY",
+    "performanceStatus": "SCHEDULE_FINISHED_NOT_A_PERFORMANCE_PASS",
+    "cleanupStatus": "VERIFIED"
+  },
+  "softPreMutationFailures": 0,
+  "phaseCounts": {
+    "BASELINE": 55,
+    "SPIKE_RAMP": 6,
+    "SPIKE_HOLD": 204,
+    "RECOVERY_TRANSITION": 5,
+    "RECOVERY": 65,
+    "RECOVERY_TAIL": 10
+  },
+  "activeThreadsObserved": [
+    1,
+    2,
+    3,
+    4,
+    6
+  ],
+  "recoveryObservedEpochMs": 1795085288989,
+  "responseTimeByPhase": {
+    "BASELINE": {
+      "samples": 55,
+      "minMs": 1,
+      "maxMs": 31,
+      "meanMs": 3.582
+    },
+    "SPIKE_RAMP": {
+      "samples": 6,
+      "minMs": 1,
+      "maxMs": 5,
+      "meanMs": 2.5
+    },
+    "SPIKE_HOLD": {
+      "samples": 204,
+      "minMs": 0,
+      "maxMs": 7,
+      "meanMs": 2.657
+    },
+    "RECOVERY_TRANSITION": {
+      "samples": 5,
+      "minMs": 1,
+      "maxMs": 5,
+      "meanMs": 2.6
+    },
+    "RECOVERY": {
+      "samples": 65,
+      "minMs": 0,
+      "maxMs": 7,
+      "meanMs": 2.646
+    },
+    "RECOVERY_TAIL": {
+      "samples": 10,
+      "minMs": 1,
+      "maxMs": 5,
+      "meanMs": 2.5
+    }
+  },
+  "resourceSampleCount": 37,
+  "secretScan": {
+    "filesScanned": 145,
+    "findings": []
+  },
+  "limitations": [
+    "Error counts come from raw JTL, independently of safety abort/performanceStatus.",
+    "No SLA/capacity verdict.",
+    "Secret scan is not universal.",
+    "Pilot does not validate 100VU,official schedule schedule or forced-stop paths."
+  ]
+}

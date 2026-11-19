@@ -722,3 +722,192 @@ n?y t?i c? reload m?i tr??ng n?n backend t? t?t gi? t?i ?? b?t l?i r?i
 ### AI Output
 
 M?nh ?? nh?n th?ng tin backend ???c b?t l?i. M?nh s? l?y baseline m?i v? ki?m tra credentials ? ch? ?? ch? ??c, kh?ng d?ng baseline c?. Pilot s? d?ng 5 Thread Group ? 1 VU trong 30 gi?y, gi? think time v? recovery 60 gi?y; profile ch?nh th?c v?n l? 10?50 VU trong 400 gi?y.
+
+
+## Interaction 11
+
+- **AI Tool:** OpenAI Codex
+- **Date & Time:** 2026-11-19T17:08:39+07:00 ? Asia/Saigon (UTC+07:00)
+
+### Prompt
+
+$performance-test-auditor
+
+# Task 1 ? Thi?t k? Spike Test Plan
+
+S? d?ng Agent Skill ?? thi?t k? Spike Testing d?a tr?n Load v? Stress Test Plan hi?n c?.
+
+Y?u c?u:
+
+1. Gi? nguy?n workflow Category Management & Verification, CSV, correlation, assertions v? think time.
+2. T?o test plan `test-plans/23120274_Spike_YYYYMMDD.jmx`, s? d?ng ng?y t?o th?c t?.
+3. Thi?t k? m? h?nh t?i:
+   - Baseline: 10 VU.
+   - Spike: t?ng t? 10 l?n 100 VU trong 3 gi?y.
+   - Duy tr? 100 VU trong 60 gi?y.
+   - Recovery: gi?m v? 10 VU v? duy tr? 60 gi?y ?? ??nh gi? kh? n?ng ph?c h?i.
+4. ??nh gi? m?c t?i ?? xu?t d?a tr?n k?t qu? Stress Testing v? ph?n c?ng hi?n t?i.
+5. S? d?ng Response Time Graph l?m report view, kh?c v?i Summary Report c?a Load v? Aggregate Report c?a Stress.
+6. T?i s? d?ng scripts v? workflow fragment hi?n c? n?u ph? h?p.
+7. Gi? ch?nh s?ch ph?n bi?t l?i hi?u n?ng v? l?i an to?n d? li?u c?a Stress Testing.
+8. B?o ??m raw JTL c? ?? th?ng tin ?? ph?n t?ch ri?ng Baseline, Spike v? Recovery.
+9. Ki?m tra t?nh JMX b?ng validator c?a Skill v? review th? c?ng.
+
+Kh?ng s?a c?c test plan Load v? Stress ?? ho?n th?nh ho?c l?m ?nh h??ng kh? n?ng t?i th?c thi.
+
+Kh?ng s?a SUT, kh?ng reset database, kh?ng ch?y Spike Test, kh?ng t?o b?o c?o Markdown trung gian v? kh?ng commit.
+
+Ghi AI Audit theo AGENTS.md.
+
+B?o c?o c?u tr?c JMX, m? h?nh t?i, report view, c? ch? x? l? l?i v? k?t qu? validation b?ng ti?ng Vi?t. D?ng ?? t?i review.
+
+### AI Output
+
+?? t?o [23120274_Spike_20261119.jmx](/E:/KiemThu/HW05/test-plans/23120274_Spike_20261119.jmx), [adapter Spike](/E:/KiemThu/HW05/scripts/category-spike-support.groovy) v? [c?u h?nh raw JTL](/E:/KiemThu/HW05/test-plans/spike-results.properties). **Ch?a ch?y Spike Test.**
+
+JMX g?m preflight ? hai Thread Group d?ng chung m?t workflow fragment ? guarded cleanup. Gi? ??ng Login ? View ? Create ? Delete ? Verify, c?ng CSV, JSON Extractor, assertions nghi?p v? v? think time **1?2 gi?y tr??c Login**. Helper Spike t?i s? d?ng logic assertion, manifest v? recovery c?a Load/Stress; JWT/ID v?n thread-local, worker baseline **1?10**, burst **11?100**.
+
+| Pha | Th?i gian m?c ti?u t? ??u workload | T?i |
+|---|---|---:|
+| Warm-up | 0?20 gi?y | T?ng ??n 10 VU |
+| Baseline | 20?80 gi?y | 10 VU trong 60 gi?y |
+| Spike ramp | 80?83 gi?y | Th?m 90 VU trong 3 gi?y |
+| Spike hold | 83?143 gi?y | 100 VU trong 60 gi?y |
+| Chuy?n v? Recovery | T? gi?y 143 | D?ng nh?m 90 VU, ch? request ?ang x? l? k?t th?c |
+| Recovery | T? l?c quan s?t c?n ??ng 10 thread | Gi? 10 VU th?m 60 gi?y |
+
+[?? XU?T] Baseline ?n ??nh 60 gi?y ?? ??i chi?u v?i Recovery. T?ng th?i gian danh ngh?a **203 gi?y**, c?ng th?i gian ch? nh?m burst d?ng, ph?n request v??t ranh gi?i v? setup/cleanup. Recovery l? **10 VU ?ang ho?t ??ng**. Watchdog 30 gi?y ch?n tr??ng h?p kh?ng quan s?t ???c vi?c gi?m t?i; ??y l? ch?t ph?i h?p an to?n, kh?ng ph?i SLA. Scheduler v? think time c? th? khi?n ???ng HTTP th?c t? kh?c ???ng VU m?c ti?u; c?n x?c minh b?ng pilot sau review.
+
+[MEASURED] Raw JTL Stress ch?nh th?c c? **37.750 samples, 0 l?i**, ??t t?i ?a 50 active threads; checksum kh?p postcheck v? cleanup VERIFIED. Backend working set cao nh?t **114,523 MiB**, CPU cao nh?t **6,152% to?n m?y**?x?p x? 74% theo m?t core tr?n m?y 12 logical CPUs. M?y i5-11400H, RAM kho?ng 15,74 GiB; l?c **17:00:59 ng?y 19/11/2026 UTC+07**, RAM tr?ng **4.784 MiB**. Nh?ng s? li?u n?y h? tr? ch?n 100 VU l?m m?c th?m d? g?p ??i Stress, **ch?a ch?ng minh 100 VU an to?n ho?c ??t hi?u n?ng**. Gi? ch?t RAM t?i thi?u 2.048 MiB; c?n preflight v? pilot ???c cho ph?p tr??c th?c thi.
+
+Report view l? **Response Time Graph**, bucket **1 gi?y**, d?ng ?? m? raw JTL offline. Filename c?a listener ?? tr?ng, tr?nh ghi v?o k?t qu? Stress c?.
+
+C?u h?nh JTL y?u c?u timestamp b?t ??u sample d?ng epoch milliseconds, `elapsed`, status, success, `grpThreads`, `allThreads`, c?ng:
+
+- `spike_phase`: ph?n ri?ng Warm-up, Baseline, Spike ramp/hold, chuy?n pha v? Recovery.
+- `spike_cohort`: baseline ho?c burst.
+- `spike_boundary_crossed`: ??nh d?u sample ?i qua ranh gi?i pha.
+
+Phase ???c g?n t? th?i ?i?m b?t ??u/k?t th?c HTTP sample, sau khi request ch?y; manifest l?u m?c workload v? Recovery quan s?t ???c. L?n th?c thi sau ph?i n?p `spike-results.properties` b?ng `-q` tr??c khi JMeter kh?i t?o collector. Kh?ng l?u body/headers/JWT; responseMessage d?ng m? ?? l?m s?ch nh? Stress. ??m l?i t? JTL ??c l?p v?i c? d?ng an to?n.
+
+Ch?nh s?ch l?i gi? nh? Stress: l?i kh? d?ng cho ph?p t?i Login/View tr??c mutation v?n l? sample th?t b?i, b? qua request ph? thu?c v? cho ph?p iteration k? ti?p theo pacing. L?i identity/role/Admin, 401/403, contract/correlation, baseline/manifest ho?c mutation kh?ng ch?c ch?n s? ch?n t?i m?i. Kh?ng retry m? Create/Delete; intent ???c ghi b?n tr??c Create, Delete ki?m tra ownership v? lo?i tr? baseline/reference IDs, Verify ki?m tra absence theo ID/name. Cleanup ngo?i ?o; forced kill v? late write v?n c?n recovery ??c l?p, kh?ng x?a theo prefix hay reset database.
+
+Ki?m tra t?nh ?? ??t: ba helper v? **13 script nh?ng bi?n d?ch ???c**; JMeter ??c ???c JMX; hai module resolve ??ng, m?i module c? 5 HTTP sampler, 5 assertions, 2 JSON Extractor v? m?t timer. Validator g?c **REVIEW_REQUIRED** v?i ba c?nh b?o do kh?ng m? r?ng fragment; b?n m? r?ng t?m th?i **exit 0, kh?ng c? finding**, v?n c?n review/runtime pilot. ??i chi?u workflow v? **10 hash Load/Stress/CSV** ??u gi? nguy?n t? ??u nhi?m v?.
+
+C? m?t h?n ch? s?n c?: JMX Stress hi?n kh?c hash ???c pin trong checker Stress, n?n launcher Stress s? ch?n preflight. Kh?c bi?t ?? t?n t?i tr??c b??c Spike; m?nh gi? nguy?n, kh?ng t? s?a.
+
+?? append [AI Audit](/E:/KiemThu/HW05/audit/audit-report.md). Kh?ng s?a SUT, reset database, t?o JTL/b?ng ch?ng Spike, b?o c?o Markdown trung gian ho?c commit. **D?ng t?i ??y ?? b?n review.**
+
+
+## Interaction 12
+
+- **AI Tool:** OpenAI Codex
+- **Date & Time:** 2026-11-19T17:57:43+07:00 ? Asia/Saigon (UTC+07:00)
+
+### Prompt
+
+$performance-test-auditor
+
+# Task 1 ? Chu?n b? th?c thi Spike Testing
+
+Y?u c?u:
+
+1. Chu?n b? launcher v? checker Spike, t?i s? d?ng scripts hi?n c? n?u ph? h?p.
+2. B? sung profile Pilot nh? ?? ki?m ch?ng c? ba pha Baseline, Spike v? Recovery. ??ng b? s? VU, th?i gian, worker namespace v? ?i?u ki?n chuy?n pha gi?a JMX v? Groovy.
+3. Gi? nguy?n profile ch?nh th?c: baseline 10 VU, t?ng l?n 100 VU trong 3 gi?y, gi? 60 gi?y v? tr? v? 10 VU trong 60 gi?y.
+4. Ki?m tra preflight v? th?c thi Pilot khi ?? ?i?u ki?n.
+5. X?c minh active threads, phase tagging, response time, assertions, correlation v? cleanup.
+6. Ki?m tra Response Time Graph v? kh? n?ng t?o HTML Dashboard t? raw JTL c? c?c tr??ng spike_phase, spike_cohort v? spike_boundary_crossed.
+7. B?o ??m launcher n?p spike-results.properties b?ng -q.
+8. Chu?n b? l?u k?t qu? ch?nh th?c t?i results/spike/official/, t?ch bi?t Pilot.
+9. Cung c?p l?nh th?c thi ch?nh th?c v? h??ng d?n m? Response Time Graph.
+10. X?c ??nh nguy?n nh?n hash JMX Stress kh?ng kh?p b?ng c?ch ??i chi?u Git v? checker, ch? b?o c?o, kh?ng t? s?a.
+
+Kh?ng s?a Load/Stress Test ?? ho?n th?nh, kh?ng s?a SUT, kh?ng reset database, kh?ng t?o b?o c?o Markdown trung gian v? kh?ng commit.
+
+Kh?ng t? ch?y Spike Test ch?nh th?c. T?i s? tr?c ti?p th?c thi v? quay video.
+
+Ghi AI Audit theo AGENTS.md v? tr? k?t qu? b?ng ti?ng Vi?t.
+
+### AI Output
+
+?? chu?n b? xong v? x?c minh pilot. **Ch?a ch?y Spike Test ch?nh th?c.**
+
+?? b? sung [launcher Spike](/E:/KiemThu/HW05/scripts/run-category-spike.ps1), [checker Spike](/E:/KiemThu/HW05/scripts/check-category-spike-run.py), [graph checker offline](/E:/KiemThu/HW05/scripts/check-spike-graph.groovy) v? [c?u h?nh profile chung](/E:/KiemThu/HW05/data/spike-profiles.json). JMX/Groovy/launcher/checker d?ng c?ng profile, c? guard ki?m tra ??ng b?. C?c file Load/Stress gi? nguy?n hash t? ??u nhi?m v?.
+
+Profile ch?nh th?c gi? nguy?n **10?100?10 VU**, t?ng trong **3 gi?y**, gi? ??nh **60 gi?y**, Recovery **60 gi?y**; think time 1?2 gi?y. Pilot d?ng **2?6?2 VU**: warm-up 2 gi?y, Baseline 8 gi?y, t?ng trong 1 gi?y, gi? ??nh 10 gi?y, Recovery 10 gi?y. Worker pilot l? 1?2 baseline, 3?6 burst; ch?nh th?c l? 1?10 v? 11?100. Recovery b?t ??u sau khi quan s?t nh?m burst ?? d?ng.
+
+[MEASURED] Pilot cu?i t?i [spike_pilot_20261119T175514_03e60725](/E:/KiemThu/HW05/results/spike/pilot/spike_pilot_20261119T175514_03e60725):
+
+- **358 HTTP samples, 70 iteration ho?n ch?nh, 0 l?i HTTP/assertion**; c? 6 worker ??u ho?n t?t.
+- Active threads theo ba pha ch?nh ??ng **2 / 6 / 2**; phase tagging v? c? v??t ranh gi?i kh?p timestamp th?c t?.
+- Response time trung b?nh: Baseline **2,745 ms**, Spike hold **2,690 ms**, Recovery **2,677 ms**. ??y l? s? li?u pilot nh?, kh?ng ph?i k?t lu?n cho 100 VU.
+- HTML Dashboard t?o th?nh c?ng v?i ba tr??ng Spike; Response Time Graph ??c raw JTL v? d?ng ?? **5 series**, bucket 1 gi?y.
+- Cleanup VERIFIED; categories/products kh?p baseline **3 / 5**; Admin s?ch, attempts=0, locked_until=null; kh?ng c?n intent unresolved.
+- Native exit=0; c? 36 m?u CPU/RAM. RAM tr?ng th?p nh?t **3.845 MiB**; qu?t 145 file kh?ng ph?t hi?n credentials ?? bi?t ho?c JWT.
+
+Preflight cu?i: backend PID **31704**, credentials CLIXML ???c b?o v? b?ng gitignore v? ki?m tra ch? ??c; RAM tr?ng **4.635 MiB**. Tr??c ?? preflight ?? ch?n ??ng khi RAM xu?ng 1.823 MiB; kh?ng ch?y t?i khi thi?u RAM. Ch?t t?i thi?u v?n l? **2.048 MiB**.
+
+Hai v?n ?? th?c t? ?? x? l? v? gi? nguy?n c?c l?n pilot tr??c:
+
+- Graph checker ban ??u thi?u b??c **Display Graph** ?? JMeter t?nh kho?ng th?i gian ?? th?. ?? s?a theo lu?ng x? l? c?a [JMeter 5.6.3](https://raw.githubusercontent.com/apache/jmeter/rel/v5.6.3/src/components/src/main/java/org/apache/jmeter/visualizers/RespTimeGraphVisualizer.java).
+- Scheduler c? th? d?ng thread s?m khi think time ti?p theo v??t deadline. Gi? Groovy ?i?u khi?n m?c k?t th?c burst, scheduler d?i h?n ch? l?m ch?t d? ph?ng; checker ki?m tra VU trong pha gi? ??nh. Profile t?i ch?nh th?c kh?ng ??i. Login/View c? th? nhi?u h?n Create/Delete/Verify khi cutoff ch?n mutation m?i; pilot cu?i l?n l??t l? **74/74/70/70/70**, kh?ng ph?i m?t d? li?u.
+
+?? chu?n b? quay video:
+
+```powershell
+Set-Location E:\KiemThu\HW05
+.\scriptsun-category-spike.ps1 -PrepareOnly
+```
+
+Khi s?n s?ng v? m?i tr??ng v?n c? l?p, t? ch?y ch?nh th?c **kh?ng th?m `-Pilot`**:
+
+```powershell
+.\scriptsun-category-spike.ps1 -Run -ConfirmIsolation
+```
+
+Launcher n?p `spike-results.properties` b?ng **`-q`**, truy?n credentials qua process environment, ghi nh?n native exit code ngay sau JMeter v? thu CPU/RAM backend theo PID. N? l?u ri?ng:
+
+```text
+results/spike/official/<run_id>/
+??? samples.jtl
+??? jmeter.log
+??? html/index.html
+??? backend-resources.csv
+??? preflight.json
+??? execution-start.json
+??? execution.json
+??? graph-check.json
+??? post-run-baseline.json
+??? postcheck.json
+```
+
+Manifest n?m t?i `audit/manifests/<run_id>/spike_local/`. Raw JTL gi? timestamp, elapsed, status/success, active thread counts v? `spike_phase`, `spike_cohort`, `spike_boundary_crossed`. Checker ??m l?i t? JTL ??c l?p v?i c? d?ng an to?n; kh?ng coi exit=0 ho?c cleanup ??t l? performance PASS.
+
+Sau ch?y, m? JMX Spike trong JMeter GUI, ch?n **Spike - Response Time Graph**, Browse ??ng raw JTL c?a run ch?nh th?c, interval **1000 ms**, b?m **Display Graph**; kh?ng b?m Start. ??i chi?u th?m `html/index.html` v? `postcheck.json`.
+
+Nguy?n nh?n hash Stress, ch? ??i chi?u v? b?o c?o:
+
+| B?n | SHA-256 b?t ??u b?ng |
+|---|---|
+| Pin trong checker | `1f4a70496fac` |
+| Git HEAD/index, LF | `57849b6aa414` |
+| Working JMX hi?n t?i | `8a82d475da1f` |
+
+Chuy?n n?i dung HEAD sang CRLF t?o ra **??ng hash pin**. Working JMX c?n kh?c c?ch serialize XML, ki?u property, key Module Controller v? l?u filename Aggregate Report tr? ??n JTL Stress c?. V? v?y c? c? kh?c bi?t newline l?n n?i dung l?u l?i; kh?ng ph?i ch? LF/CRLF. ??y l? tr?ng th?i c? tr??c nhi?m v?, m?nh kh?ng s?a JMX/checker Stress.
+
+Validator tr?n b?n m? r?ng module: **exit 0, kh?ng finding**, v?n `REVIEW_REQUIRED`; pilot cu?i ??t to?n b? postcheck. Ch?a x?c minh 100 VU ho?c forced-stop recovery. ?? append [AI Audit](/E:/KiemThu/HW05/audit/audit-report.md); kh?ng s?a SUT, reset database, t?o b?o c?o Markdown trung gian ho?c commit.
+
+
+## Interaction 13
+
+- **AI Tool:** OpenAI Codex
+- **Date & Time:** 2026-11-19T17:57:43+07:00 ? Asia/Saigon (UTC+07:00)
+
+### Prompt
+
+oke
+
+### AI Output
+
+RAM ki?m tra l?i ?? l?n **4.105 MiB**. C?u h?nh d?ng chung hi?n ??ng b? pilot **2?6?2 VU** v?i Recovery 10 gi?y; profile ch?nh th?c v?n **10?100?10 VU**, t?ng trong 3 gi?y, gi? ??nh v? Recovery m?i pha 60 gi?y. M?nh s? ch?y pilot ri?ng v? ki?m tra c? vi?c ??c raw JTL b?ng Response Time Graph.

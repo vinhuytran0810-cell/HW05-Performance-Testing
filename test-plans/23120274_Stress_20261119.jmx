@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="23120274 - Stress - Category Management &amp; Verification" enabled="true">
@@ -20,66 +20,64 @@ Dashboard requires responseMessage: Stress assertions replace it with an allowli
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
-        <collectionProp name="Arguments.arguments" />
+        <collectionProp name="Arguments.arguments"/>
       </elementProp>
-      <stringProp name="TestPlan.user_define_classpath" />
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="00 - Preflight outside measurement" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration" />
-        <stringProp name="ThreadGroup.delay">0</stringProp>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="00 - Preflight outside measurement">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
       </SetupThreadGroup>
       <hashTree>
         <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Preflight + durable baseline (ignored control sample)" enabled="true">
           <stringProp name="scriptLanguage">groovy</stringProp>
-          <stringProp name="parameters" />
-          <stringProp name="filename" />
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="script">SampleResult.setIgnore()
-props.remove('hw05.categoryStress.class')
+props.remove(&apos;hw05.categoryStress.class&apos;)
 try {
     File planDir = new File(org.apache.jmeter.services.FileServer.getFileServer().getBaseDir())
-    File root = new File(props.getProperty('project_root', new File(planDir, '..').canonicalPath))
+    File root = new File(props.getProperty(&apos;project_root&apos;, new File(planDir, &apos;..&apos;).canonicalPath))
     def loader = new GroovyClassLoader(this.class.classLoader)
-    loader.parseClass(new File(root, 'scripts/category-load-support.groovy'))
-    Class helper = loader.parseClass(new File(root, 'scripts/category-stress-support.groovy'))
-    props.put('hw05.categoryStress.class', helper)
+    loader.parseClass(new File(root, &apos;scripts/category-load-support.groovy&apos;))
+    Class helper = loader.parseClass(new File(root, &apos;scripts/category-stress-support.groovy&apos;))
+    props.put(&apos;hw05.categoryStress.class&apos;, helper)
     helper.setupStress(props, planDir)
-    log.info('HW05 Stress preflight passed; reviewed workload eligible')
+    log.info(&apos;HW05 Stress preflight passed; reviewed workload eligible&apos;)
 } catch (Throwable ignored) {
-    log.error('HW05 STRESS PREFLIGHT BLOCKED: approvals/RAM/credentials/CSV/baseline/runtime guard')
+    log.error(&apos;HW05 STRESS PREFLIGHT BLOCKED: approvals/RAM/credentials/CSV/baseline/runtime guard&apos;)
     ctx.getEngine().stopTest()
 }
 </stringProp>
         </JSR223Sampler>
-        <hashTree />
+        <hashTree/>
       </hashTree>
-      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Reusable Category Workflow" enabled="false" />
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Reusable Category Workflow" enabled="false"/>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Category Workflow" enabled="true" />
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Category Workflow"/>
         <hashTree>
-          <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP defaults - property-configurable target/timeouts" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-              <collectionProp name="Arguments.arguments" />
-            </elementProp>
+          <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP defaults - property-configurable target/timeouts">
+            <stringProp name="HTTPSampler.connect_timeout">${__P(connect_timeout_ms,3000)}</stringProp>
+            <stringProp name="HTTPSampler.response_timeout">${__P(response_timeout_ms,10000)}</stringProp>
             <stringProp name="HTTPSampler.domain">${__P(host,localhost)}</stringProp>
             <stringProp name="HTTPSampler.port">${__P(port,3000)}</stringProp>
             <stringProp name="HTTPSampler.protocol">${__P(protocol,http)}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
             <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
-            <stringProp name="HTTPSampler.connect_timeout">${__P(connect_timeout_ms,3000)}</stringProp>
-            <stringProp name="HTTPSampler.response_timeout">${__P(response_timeout_ms,10000)}</stringProp>
           </ConfigTestElement>
-          <hashTree />
+          <hashTree/>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="JSON headers" enabled="true">
             <collectionProp name="HeaderManager.headers">
               <elementProp name="Accept" elementType="Header">
@@ -92,17 +90,17 @@ try {
               </elementProp>
             </collectionProp>
           </HeaderManager>
-          <hashTree />
+          <hashTree/>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Iteration gate/reset/credentials/name (ignored)" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">def k = props.get('hw05.categoryStress.class')
+            <stringProp name="script">def k = props.get(&apos;hw05.categoryStress.class&apos;)
 if (k == null) { SampleResult.setIgnore(); ctx.getThread().stop(); return }
 k.gateStress(binding)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
           <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Guard Login: configured clean iteration" enabled="true">
             <stringProp name="IfController.condition">${do_login}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -110,7 +108,12 @@ k.gateStress(binding)</stringProp>
           </IfController>
           <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="01_Admin_Login" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Request body">
+              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+              <stringProp name="HTTPSampler.path">/api/login</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -119,38 +122,28 @@ k.gateStress(binding)</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.path">/api/login</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <boolProp name="HTTPSampler.image_parser">false</boolProp>
             </HTTPSamplerProxy>
             <hashTree>
               <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Think time once per iteration: 1000-2000 ms" enabled="true">
                 <stringProp name="ConstantTimer.delay">${__P(think_min_ms,1000)}</stringProp>
                 <stringProp name="RandomTimer.range">${__P(think_range_ms,1000)}</stringProp>
               </UniformRandomTimer>
-              <hashTree />
+              <hashTree/>
               <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JWT + admin identity" enabled="true">
                 <stringProp name="JSONPostProcessor.referenceNames">token;login_user_id;login_role</stringProp>
                 <stringProp name="JSONPostProcessor.jsonPathExprs">$.token;$.user.id;$.user.role</stringProp>
                 <stringProp name="JSONPostProcessor.match_numbers">1;1;1</stringProp>
                 <stringProp name="JSONPostProcessor.defaultValues">TOKEN_NOT_FOUND;ID_NOT_FOUND;ROLE_NOT_FOUND</stringProp>
-                <boolProp name="JSONPostProcessor.compute_concat">false</boolProp>
               </JSONPostProcessor>
-              <hashTree />
+              <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Contract + ownership assertion LOGIN" enabled="true">
                 <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters" />
-                <stringProp name="filename" />
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
                 <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">props.get('hw05.categoryStress.class').assertStress(binding, 'LOGIN')</stringProp>
+                <stringProp name="script">props.get(&apos;hw05.categoryStress.class&apos;).assertStress(binding, &apos;LOGIN&apos;)</stringProp>
               </JSR223Assertion>
-              <hashTree />
+              <hashTree/>
             </hashTree>
           </hashTree>
           <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Guard View: Login contract passed" enabled="true">
@@ -160,18 +153,14 @@ k.gateStress(binding)</stringProp>
           </IfController>
           <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="02_View_Categories" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Request body">
-                <collectionProp name="Arguments.arguments" />
-              </elementProp>
+              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/api/categories</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
               <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
-              <boolProp name="HTTPSampler.image_parser">false</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
             </HTTPSamplerProxy>
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="JSON headers + thread-local Bearer" enabled="true">
@@ -190,27 +179,27 @@ k.gateStress(binding)</stringProp>
                   </elementProp>
                 </collectionProp>
               </HeaderManager>
-              <hashTree />
+              <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Contract + ownership assertion VIEW" enabled="true">
                 <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters" />
-                <stringProp name="filename" />
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
                 <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">props.get('hw05.categoryStress.class').assertStress(binding, 'VIEW')</stringProp>
+                <stringProp name="script">props.get(&apos;hw05.categoryStress.class&apos;).assertStress(binding, &apos;VIEW&apos;)</stringProp>
               </JSR223Assertion>
-              <hashTree />
+              <hashTree/>
             </hashTree>
           </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Prepare fsynced Create intent BEFORE mutation (ignored)" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">def k = props.get('hw05.categoryStress.class')
+            <stringProp name="script">def k = props.get(&apos;hw05.categoryStress.class&apos;)
 if (k == null) { SampleResult.setIgnore(); ctx.getThread().stop(); return }
 k.prepare(binding)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
           <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Guard Create: durable intent + valid Login/View" enabled="true">
             <stringProp name="IfController.condition">${do_create}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -218,7 +207,12 @@ k.prepare(binding)</stringProp>
           </IfController>
           <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="03_Create_Category" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Request body">
+              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+              <stringProp name="HTTPSampler.path">/api/categories</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -227,15 +221,6 @@ k.prepare(binding)</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
-              <stringProp name="HTTPSampler.path">/api/categories</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <boolProp name="HTTPSampler.image_parser">false</boolProp>
             </HTTPSamplerProxy>
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="JSON headers + thread-local Bearer" enabled="true">
@@ -254,35 +239,34 @@ k.prepare(binding)</stringProp>
                   </elementProp>
                 </collectionProp>
               </HeaderManager>
-              <hashTree />
+              <hashTree/>
               <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Actual owned category ID" enabled="true">
                 <stringProp name="JSONPostProcessor.referenceNames">category_id</stringProp>
                 <stringProp name="JSONPostProcessor.jsonPathExprs">$.id</stringProp>
                 <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
                 <stringProp name="JSONPostProcessor.defaultValues">ID_NOT_FOUND</stringProp>
-                <boolProp name="JSONPostProcessor.compute_concat">false</boolProp>
               </JSONPostProcessor>
-              <hashTree />
+              <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Contract + ownership assertion CREATE" enabled="true">
                 <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters" />
-                <stringProp name="filename" />
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
                 <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">props.get('hw05.categoryStress.class').assertStress(binding, 'CREATE')</stringProp>
+                <stringProp name="script">props.get(&apos;hw05.categoryStress.class&apos;).assertStress(binding, &apos;CREATE&apos;)</stringProp>
               </JSR223Assertion>
-              <hashTree />
+              <hashTree/>
             </hashTree>
           </hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Guard Delete ownership + baseline/reference IDs (ignored)" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">def k = props.get('hw05.categoryStress.class')
+            <stringProp name="script">def k = props.get(&apos;hw05.categoryStress.class&apos;)
 if (k == null) { SampleResult.setIgnore(); ctx.getThread().stop(); return }
 k.deleteGate(binding)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
           <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Guard Delete: current intent + confirmed actual ID" enabled="true">
             <stringProp name="IfController.condition">${do_delete}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
@@ -290,18 +274,14 @@ k.deleteGate(binding)</stringProp>
           </IfController>
           <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="04_Delete_Category" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Request body">
-                <collectionProp name="Arguments.arguments" />
-              </elementProp>
+              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/api/categories/${category_id}</stringProp>
               <stringProp name="HTTPSampler.method">DELETE</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
               <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
-              <boolProp name="HTTPSampler.image_parser">false</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
             </HTTPSamplerProxy>
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="JSON headers + thread-local Bearer" enabled="true">
@@ -320,15 +300,15 @@ k.deleteGate(binding)</stringProp>
                   </elementProp>
                 </collectionProp>
               </HeaderManager>
-              <hashTree />
+              <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Contract + ownership assertion DELETE" enabled="true">
                 <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters" />
-                <stringProp name="filename" />
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
                 <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">props.get('hw05.categoryStress.class').assertStress(binding, 'DELETE')</stringProp>
+                <stringProp name="script">props.get(&apos;hw05.categoryStress.class&apos;).assertStress(binding, &apos;DELETE&apos;)</stringProp>
               </JSR223Assertion>
-              <hashTree />
+              <hashTree/>
             </hashTree>
           </hashTree>
           <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Guard Verify: owned Delete was attempted" enabled="true">
@@ -338,18 +318,14 @@ k.deleteGate(binding)</stringProp>
           </IfController>
           <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="05_Verify_Category_Deletion" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Request body">
-                <collectionProp name="Arguments.arguments" />
-              </elementProp>
+              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/api/categories</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
               <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
-              <boolProp name="HTTPSampler.image_parser">false</boolProp>
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+                <collectionProp name="Arguments.arguments"/>
+              </elementProp>
             </HTTPSamplerProxy>
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="JSON headers + thread-local Bearer" enabled="true">
@@ -368,37 +344,37 @@ k.deleteGate(binding)</stringProp>
                   </elementProp>
                 </collectionProp>
               </HeaderManager>
-              <hashTree />
+              <hashTree/>
               <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Contract + ownership assertion VERIFY" enabled="true">
                 <stringProp name="scriptLanguage">groovy</stringProp>
-                <stringProp name="parameters" />
-                <stringProp name="filename" />
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
                 <stringProp name="cacheKey">true</stringProp>
-                <stringProp name="script">props.get('hw05.categoryStress.class').assertStress(binding, 'VERIFY')</stringProp>
+                <stringProp name="script">props.get(&apos;hw05.categoryStress.class&apos;).assertStress(binding, &apos;VERIFY&apos;)</stringProp>
               </JSR223Assertion>
-              <hashTree />
+              <hashTree/>
             </hashTree>
           </hashTree>
         </hashTree>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 1 - 10 VU - cumulative 10" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">-1</stringProp>
-        </elementProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 1 - 10 VU - cumulative 10">
         <stringProp name="ThreadGroup.num_threads">${__P(stress_cohort_threads,10)}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${__P(stress_ramp_seconds,20)}</stringProp>
-        <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(stress_duration_0,400)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(stress_delay_0,0)}</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Approved categories.csv - shared base names" enabled="true">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Approved categories.csv - shared base names">
           <stringProp name="filename">${__P(csv_file,../data/categories.csv)}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="variableNames" />
+          <stringProp name="variableNames"></stringProp>
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -406,46 +382,46 @@ k.deleteGate(binding)</stringProp>
           <boolProp name="recycle">true</boolProp>
           <boolProp name="stopThread">false</boolProp>
         </CSVDataSet>
-        <hashTree />
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true" />
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Worker namespace (ignored)" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Worker namespace (ignored)">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">SampleResult.setIgnore(); vars.put('cohort_index', '0')</stringProp>
+            <stringProp name="script">SampleResult.setIgnore(); vars.put(&apos;cohort_index&apos;, &apos;0&apos;)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
         </hashTree>
-        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Run five-step Category Workflow" enabled="true">
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Run five-step Category Workflow">
           <collectionProp name="ModuleController.node_path">
-            <stringProp name="0">Test Plan</stringProp>
-            <stringProp name="1">23120274 - Stress - Category Management &amp; Verification</stringProp>
-            <stringProp name="2">Reusable Category Workflow</stringProp>
-            <stringProp name="3">Category Workflow</stringProp>
+            <stringProp name="764597751">Test Plan</stringProp>
+            <stringProp name="261396125">23120274 - Stress - Category Management &amp; Verification</stringProp>
+            <stringProp name="-2112522036">Reusable Category Workflow</stringProp>
+            <stringProp name="142040225">Category Workflow</stringProp>
           </collectionProp>
         </ModuleController>
-        <hashTree />
+        <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 2 - 10 VU - cumulative 20" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">-1</stringProp>
-        </elementProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 2 - 10 VU - cumulative 20">
         <stringProp name="ThreadGroup.num_threads">${__P(stress_cohort_threads,10)}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${__P(stress_ramp_seconds,20)}</stringProp>
-        <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(stress_duration_1,320)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(stress_delay_1,80)}</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Approved categories.csv - shared base names" enabled="true">
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Approved categories.csv - shared base names">
           <stringProp name="filename">${__P(csv_file,../data/categories.csv)}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="variableNames" />
+          <stringProp name="variableNames"></stringProp>
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -453,46 +429,46 @@ k.deleteGate(binding)</stringProp>
           <boolProp name="recycle">true</boolProp>
           <boolProp name="stopThread">false</boolProp>
         </CSVDataSet>
-        <hashTree />
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true" />
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Worker namespace (ignored)" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Worker namespace (ignored)">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">SampleResult.setIgnore(); vars.put('cohort_index', '1')</stringProp>
+            <stringProp name="script">SampleResult.setIgnore(); vars.put(&apos;cohort_index&apos;, &apos;1&apos;)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
         </hashTree>
-        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Run five-step Category Workflow" enabled="true">
+        <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Run five-step Category Workflow">
           <collectionProp name="ModuleController.node_path">
-            <stringProp name="0">Test Plan</stringProp>
-            <stringProp name="1">23120274 - Stress - Category Management &amp; Verification</stringProp>
-            <stringProp name="2">Reusable Category Workflow</stringProp>
-            <stringProp name="3">Category Workflow</stringProp>
+            <stringProp name="764597751">Test Plan</stringProp>
+            <stringProp name="261396125">23120274 - Stress - Category Management &amp; Verification</stringProp>
+            <stringProp name="-2112522036">Reusable Category Workflow</stringProp>
+            <stringProp name="142040225">Category Workflow</stringProp>
           </collectionProp>
         </ModuleController>
-        <hashTree />
+        <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 3 - 10 VU - cumulative 30" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">-1</stringProp>
-        </elementProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 3 - 10 VU - cumulative 30">
         <stringProp name="ThreadGroup.num_threads">${__P(stress_cohort_threads,10)}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${__P(stress_ramp_seconds,20)}</stringProp>
-        <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(stress_duration_2,240)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(stress_delay_2,160)}</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Approved categories.csv - shared base names" enabled="true">
           <stringProp name="filename">${__P(csv_file,../data/categories.csv)}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="variableNames" />
+          <stringProp name="variableNames"></stringProp>
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -500,46 +476,46 @@ k.deleteGate(binding)</stringProp>
           <boolProp name="recycle">true</boolProp>
           <boolProp name="stopThread">false</boolProp>
         </CSVDataSet>
-        <hashTree />
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true" />
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Worker namespace (ignored)" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">SampleResult.setIgnore(); vars.put('cohort_index', '2')</stringProp>
+            <stringProp name="script">SampleResult.setIgnore(); vars.put(&apos;cohort_index&apos;, &apos;2&apos;)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
         </hashTree>
         <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Run five-step Category Workflow" enabled="true">
           <collectionProp name="ModuleController.node_path">
-            <stringProp name="0">Test Plan</stringProp>
-            <stringProp name="1">23120274 - Stress - Category Management &amp; Verification</stringProp>
-            <stringProp name="2">Reusable Category Workflow</stringProp>
-            <stringProp name="3">Category Workflow</stringProp>
+            <stringProp name="764597751">Test Plan</stringProp>
+            <stringProp name="261396125">23120274 - Stress - Category Management &amp; Verification</stringProp>
+            <stringProp name="-2112522036">Reusable Category Workflow</stringProp>
+            <stringProp name="142040225">Category Workflow</stringProp>
           </collectionProp>
         </ModuleController>
-        <hashTree />
+        <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 4 - 10 VU - cumulative 40" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">-1</stringProp>
-        </elementProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 4 - 10 VU - cumulative 40">
         <stringProp name="ThreadGroup.num_threads">${__P(stress_cohort_threads,10)}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${__P(stress_ramp_seconds,20)}</stringProp>
-        <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(stress_duration_3,160)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(stress_delay_3,240)}</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Approved categories.csv - shared base names" enabled="true">
           <stringProp name="filename">${__P(csv_file,../data/categories.csv)}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="variableNames" />
+          <stringProp name="variableNames"></stringProp>
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -547,46 +523,46 @@ k.deleteGate(binding)</stringProp>
           <boolProp name="recycle">true</boolProp>
           <boolProp name="stopThread">false</boolProp>
         </CSVDataSet>
-        <hashTree />
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true" />
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Worker namespace (ignored)" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">SampleResult.setIgnore(); vars.put('cohort_index', '3')</stringProp>
+            <stringProp name="script">SampleResult.setIgnore(); vars.put(&apos;cohort_index&apos;, &apos;3&apos;)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
         </hashTree>
         <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Run five-step Category Workflow" enabled="true">
           <collectionProp name="ModuleController.node_path">
-            <stringProp name="0">Test Plan</stringProp>
-            <stringProp name="1">23120274 - Stress - Category Management &amp; Verification</stringProp>
-            <stringProp name="2">Reusable Category Workflow</stringProp>
-            <stringProp name="3">Category Workflow</stringProp>
+            <stringProp name="764597751">Test Plan</stringProp>
+            <stringProp name="261396125">23120274 - Stress - Category Management &amp; Verification</stringProp>
+            <stringProp name="-2112522036">Reusable Category Workflow</stringProp>
+            <stringProp name="142040225">Category Workflow</stringProp>
           </collectionProp>
         </ModuleController>
-        <hashTree />
+        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Stress Cohort 5 - 10 VU - cumulative 50" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">-1</stringProp>
-        </elementProp>
         <stringProp name="ThreadGroup.num_threads">${__P(stress_cohort_threads,10)}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${__P(stress_ramp_seconds,20)}</stringProp>
-        <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">${__P(stress_duration_4,80)}</stringProp>
         <stringProp name="ThreadGroup.delay">${__P(stress_delay_4,320)}</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <intProp name="LoopController.loops">-1</intProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
       </ThreadGroup>
       <hashTree>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Approved categories.csv - shared base names" enabled="true">
           <stringProp name="filename">${__P(csv_file,../data/categories.csv)}</stringProp>
           <stringProp name="fileEncoding">UTF-8</stringProp>
-          <stringProp name="variableNames" />
+          <stringProp name="variableNames"></stringProp>
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
           <boolProp name="ignoreFirstLine">false</boolProp>
@@ -594,54 +570,52 @@ k.deleteGate(binding)</stringProp>
           <boolProp name="recycle">true</boolProp>
           <boolProp name="stopThread">false</boolProp>
         </CSVDataSet>
-        <hashTree />
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true" />
+        <hashTree/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Assign unique worker cohort once" enabled="true"/>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Worker namespace (ignored)" enabled="true">
             <stringProp name="scriptLanguage">groovy</stringProp>
-            <stringProp name="parameters" />
-            <stringProp name="filename" />
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
             <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="script">SampleResult.setIgnore(); vars.put('cohort_index', '4')</stringProp>
+            <stringProp name="script">SampleResult.setIgnore(); vars.put(&apos;cohort_index&apos;, &apos;4&apos;)</stringProp>
           </JSR223Sampler>
-          <hashTree />
+          <hashTree/>
         </hashTree>
         <ModuleController guiclass="ModuleControllerGui" testclass="ModuleController" testname="Run five-step Category Workflow" enabled="true">
           <collectionProp name="ModuleController.node_path">
-            <stringProp name="0">Test Plan</stringProp>
-            <stringProp name="1">23120274 - Stress - Category Management &amp; Verification</stringProp>
-            <stringProp name="2">Reusable Category Workflow</stringProp>
-            <stringProp name="3">Category Workflow</stringProp>
+            <stringProp name="764597751">Test Plan</stringProp>
+            <stringProp name="261396125">23120274 - Stress - Category Management &amp; Verification</stringProp>
+            <stringProp name="-2112522036">Reusable Category Workflow</stringProp>
+            <stringProp name="142040225">Category Workflow</stringProp>
           </collectionProp>
         </ModuleController>
-        <hashTree />
+        <hashTree/>
       </hashTree>
       <PostThreadGroup guiclass="PostThreadGroupGui" testclass="PostThreadGroup" testname="99 - Recovery/baseline/admin verification outside measurement" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration" />
-        <stringProp name="ThreadGroup.delay">0</stringProp>
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
+        <longProp name="ThreadGroup.delay">0</longProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+        </elementProp>
       </PostThreadGroup>
       <hashTree>
         <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Guarded recovery + final state checks (ignored)" enabled="true">
           <stringProp name="scriptLanguage">groovy</stringProp>
-          <stringProp name="parameters" />
-          <stringProp name="filename" />
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="script">SampleResult.setIgnore()
-def k = props.get('hw05.categoryStress.class')
+def k = props.get(&apos;hw05.categoryStress.class&apos;)
 if (k != null) k.teardownStress(binding)</stringProp>
         </JSR223Sampler>
-        <hashTree />
+        <hashTree/>
       </hashTree>
-      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Stress - Aggregate Report (main HTTP only; no output file)" enabled="true">
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Stress - Aggregate Report (main HTTP only; no output file)">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -669,15 +643,14 @@ if (k != null) k.teardownStress(binding)</stringProp>
             <assertionsResultsToSave>0</assertionsResultsToSave>
             <bytes>true</bytes>
             <sentBytes>true</sentBytes>
-            <url>false</url>
             <threadCounts>true</threadCounts>
             <idleTime>true</idleTime>
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename" />
+        <stringProp name="filename">E:\KiemThu\HW05\results\stress\official\stress_official_20261119T163536_6d710318\samples.jtl</stringProp>
       </ResultCollector>
-      <hashTree />
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>
