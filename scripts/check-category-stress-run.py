@@ -7,7 +7,7 @@ spec = importlib.util.spec_from_file_location('hw05_load_checks', Path(__file__)
 load = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(load)
 ROOT = Path(__file__).resolve().parents[1]
-STRESS_EXPECTED = {'test-plans/23120274_Stress_20261119.jmx': '1f4a70496facf5c4fcd110601fbdcc2e3fb78a1a3066bc79d1801a17f7af423b', 'scripts/category-stress-support.groovy': '8dd7091b68cc494337c142c9a597bec45fafcfcd2f6bf7574cf8a7f8013e797d', 'scripts/run-category-stress.ps1': '5a96cada9d17d6e24fefe2ab13be93a3f295440569ce09ab137ede0f70ff57a9', 'scripts/run-category-load.ps1': '63395180c1c740acf0a86e689e7ddbbca6bc1864411166083e3ada0954e4eb2f', 'scripts/check-category-load-run.py': '96d3d00c132f79c43ff886231a9067a092eac70600057f691dce8ffc83115656'}
+STRESS_EXPECTED = {'test-plans/23120274_Stress_20261119.jmx': '1f4a70496facf5c4fcd110601fbdcc2e3fb78a1a3066bc79d1801a17f7af423b', 'scripts/category-stress-support.groovy': '8dd7091b68cc494337c142c9a597bec45fafcfcd2f6bf7574cf8a7f8013e797d', 'scripts/run-category-stress.ps1': '5a96cada9d17d6e24fefe2ab13be93a3f295440569ce09ab137ede0f70ff57a9', 'scripts/run-category-load.ps1': '610980a699d2e48697936718d06e7a23c39ac853fd88c12cb9b2b38f67a822d7', 'scripts/check-category-load-run.py': '94642d3f5cbe418d15517758c386a5db1eaad5fe5b715e0c7fcda34713f6ee7d'}
 PATHS = ['test-plans/23120274_Stress_20261119.jmx', 'scripts/category-stress-support.groovy',
          'scripts/run-category-stress.ps1', 'scripts/check-category-stress-run.py']
 

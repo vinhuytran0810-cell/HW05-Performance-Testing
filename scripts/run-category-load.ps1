@@ -1,5 +1,5 @@
-<#
-Official Load launcher. Default/PrepareOnly performs read-only preflight and exits.
+﻿<#
+Load launcher; opt-in -Endurance reuses the same immutable Load JMX. Default/PrepareOnly performs read-only preflight and exits.
 Execution requires BOTH -Run and -ConfirmIsolation; no load is started on import/parse.
 Fixed reviewed workload: 10 VU, ramp 20s, duration 180s, think 1000-2000ms.
 No transcript is used. Password/JWT values are never written to command metadata.
@@ -8,6 +8,7 @@ No transcript is used. Password/JWT values are never written to command metadata
 param(
     [switch]$PrepareOnly,
     [switch]$Run,
+    [switch]$Endurance,
     [switch]$ConfirmIsolation,
     [string]$JMeterHome = 'E:\Tools\apache-jmeter-5.6.3\apache-jmeter-5.6.3'
 )
@@ -26,6 +27,10 @@ $nativeExit = $null
 $scriptExit = 2
 $runDirectory = $null
 $execution = $null
+$scenario = if ($Endurance) { 'endurance' } else { 'load' }
+$workloadThreads = if ($Endurance) { 50 } else { 10 }
+$workloadDuration = if ($Endurance) { 900 } else { 180 }
+$engineId = if ($Endurance) { 'endurance_local' } else { 'load_local' }
 $previousEmail = $env:ESHOP_ADMIN_EMAIL
 $previousPassword = $env:ESHOP_ADMIN_PASSWORD
 function Set-LocalCredentials {
@@ -61,8 +66,11 @@ try {
     $backend = Get-Process -Id $backendProcessId
     $backendStart = $backend.StartTime.ToUniversalTime().ToString('o')
     $logicalProcessors = [int](Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
+    if ($Endurance -and (Get-PSDrive -Name E).Free -lt 1GB) { throw 'Insufficient endurance result disk space' }
     Set-LocalCredentials
-    $preflightText = & python $checker preflight
+    $preflightArgs = @($checker, 'preflight')
+    if ($Endurance) { $preflightArgs += '--endurance' }
+    $preflightText = & python @preflightArgs
     $preflightCode = $LASTEXITCODE
     Clear-LocalCredentials
     if ($preflightCode -ne 0) { throw 'Read-only credential/baseline/hash preflight blocked; no load started' }
@@ -74,15 +82,15 @@ try {
     $preflight | Add-Member NoteProperty logicalProcessors $logicalProcessors
     Write-Host ('PREFLIGHT READY | backend PID={0} | free RAM={1} MiB | categories={2} | products={3}' -f
         $backendProcessId, $freeMiB, @($preflight.baseline.categories).Count, @($preflight.baseline.products).Count)
-    Write-Host 'Reviewed settings: 10 VU | ramp=20s | duration=180s (includes ramp) | think=1000-2000ms'
+    Write-Host ('Reviewed scenario={0} | {1} VU | ramp=20s | duration={2}s (includes ramp) | think=1000-2000ms' -f $scenario,$workloadThreads,$workloadDuration)
     if (-not $Run) {
         Write-Host 'PREPARE ONLY: no JMeter engine, mutation, official JTL or run directory created. Await confirmation.'
         $scriptExit = 0
         return
     }
     if (Get-NetUDPEndpoint -LocalPort 4445 -ErrorAction SilentlyContinue) { throw 'JMeter shutdown port 4445 is already in use' }
-    $runId = 'load_' + (Get-Date -Format 'yyyyMMddTHHmmss') + '_' + [guid]::NewGuid().ToString('N').Substring(0, 8)
-    $runDirectory = Join-Path $projectRoot ('results/load/' + $runId)
+    $runId = ($scenario + '_') + (Get-Date -Format 'yyyyMMddTHHmmss') + '_' + [guid]::NewGuid().ToString('N').Substring(0, 8)
+    $runDirectory = Join-Path $projectRoot ('results/' + $scenario + '/' + $runId)
     if (Test-Path -LiteralPath $runDirectory) { throw 'Run directory already exists' }
     New-Item -ItemType Directory -Path $runDirectory | Out-Null
     $preflight | Add-Member NoteProperty runId $runId
@@ -93,8 +101,8 @@ try {
     $dashboard = Join-Path $runDirectory 'html'
     $stopFile = Join-Path $runDirectory '.monitor-stop'
     $resourceFile = Join-Path $runDirectory 'backend-resources.csv'
-    $monitorJob = Start-Job -ArgumentList $backendProcessId, $backendStart, $logicalProcessors, $resourceFile, $stopFile, $runDirectory -ScriptBlock {
-        param($TargetBackendId, $ExpectedStart, $LogicalCount, $CsvPath, $StopPath, $EvidencePath)
+    $monitorJob = Start-Job -ArgumentList $backendProcessId, $backendStart, $logicalProcessors, $resourceFile, $stopFile, $runDirectory, ([bool]$Endurance) -ScriptBlock {
+        param($TargetBackendId, $ExpectedStart, $LogicalCount, $CsvPath, $StopPath, $EvidencePath, $IsEndurance)
         $lastTime = $null; $lastCpu = $null; $shutdownSent = $false
         while (-not (Test-Path -LiteralPath $StopPath)) {
             $instant = [DateTimeOffset]::UtcNow
@@ -122,10 +130,11 @@ try {
                 backendCpuSecondsTotal=$cpuSeconds; backendCpuPercentOneCore=$cpuOneCore; backendCpuPercentMachine=$cpuMachine
                 backendWorkingSetMiB=$workingMiB; backendPrivateBytesMiB=$privateMiB; hostFreeRAMMiB=$freeRam
             } | Export-Csv -LiteralPath $CsvPath -Append -NoTypeInformation -Encoding UTF8
-            if (-not $sameProcess -and -not $shutdownSent) {
+            if ((-not $sameProcess -or ($IsEndurance -and ($null -eq $freeRam -or $freeRam -lt 2048))) -and -not $shutdownSent) {
                 # Graceful JMeter-only shutdown; never kill/restart/reset the SUT.
+                $monitorReason = if (-not $sameProcess) { 'BACKEND_PROCESS_CHANGED' } else { 'RAM_GUARD_FAILED' }
                 [System.IO.File]::WriteAllText((Join-Path $EvidencePath 'monitor-alert.json'),
-                    ('{"reason":"BACKEND_PROCESS_CHANGED","timestampUtc":"' + $instant.ToString('o') + '"}'))
+                    ('{"reason":"' + $monitorReason + '","timestampUtc":"' + $instant.ToString('o') + '"}'))
                 try {
                     $udp = [System.Net.Sockets.UdpClient]::new()
                     $bytes = [System.Text.Encoding]::ASCII.GetBytes('Shutdown')
@@ -139,10 +148,10 @@ try {
     }
     $jmeterArgs = @(
         '-n', '-t', $plan, '-l', $jtl, '-j', $jmeterLog, '-e', '-o', $dashboard,
-        '-Jload_threads=10', '-Jramp_seconds=20', '-Jduration_seconds=180',
+        ('-Jload_threads=' + $workloadThreads), '-Jramp_seconds=20', ('-Jduration_seconds=' + $workloadDuration),
         '-Jthink_min_ms=1000', '-Jthink_range_ms=1000',
         '-Jhw05.allow_mutation=true', '-Jhw05.isolated_sut=true',
-        ('-Jrun_id=' + $runId), '-Jengine_id=load_local',
+        ('-Jrun_id=' + $runId), ('-Jengine_id=' + $engineId),
         ('-Jproject_root=' + $projectRoot), ('-Jcsv_file=' + (Join-Path $projectRoot 'data/categories.csv')),
         '-Jjmeterengine.nongui.port=4445',
         '-Jjmeter.save.saveservice.output_format=csv', '-Jjmeter.save.saveservice.timestamp_format=ms',
@@ -153,13 +162,19 @@ try {
         '-Jjmeter.save.saveservice.assertion_results_failure_message=false', '-Jjmeter.save.saveservice.assertion_results=none',
         '-Jsample_variables=', '-Lorg.apache.http=WARN', '-Lorg.apache.http.wire=OFF', '-Lorg.apache.jmeter.protocol.http=WARN'
     )
+    if ($Endurance) {
+        $jmeterArgs += @('-Jhw05.endurance=true','-Jhw05.endurance_reviewed=true',
+            '-Jjmeter.save.saveservice.thread_counts=true','-Jjmeter.save.saveservice.time=true',
+            '-Jjmeter.save.saveservice.timestamp=true','-Jjmeter.save.saveservice.label=true',
+            '-Jjmeter.save.saveservice.response_code=true','-Jjmeter.save.saveservice.successful=true')
+    }
     $execution = [ordered]@{
-        kind='official_load'; runId=$runId; startedAt=[DateTimeOffset]::UtcNow.ToString('o'); executable=$jmeter
+        kind=('official_' + $scenario); runId=$runId; startedAt=[DateTimeOffset]::UtcNow.ToString('o'); executable=$jmeter
         arguments=$jmeterArgs; nativeLauncherExitCode=$null; finishedAt=$null; backendProcessUnchanged=$false
         credentials='Local DPAPI CLIXML -> process environment; no values retained'
         cpuDefinition='OneCore=100*deltaCpuSeconds/deltaWallSeconds; Machine=OneCore/logicalProcessors; first sample is null'
         ramDefinition='Process working set/private bytes, not JavaScript heap'; resourceIntervalSeconds=1
-        workload=@{threads=10;rampSeconds=20;durationSeconds=180;thinkMinMs=1000;thinkRangeMs=1000}
+        workload=@{threads=$workloadThreads;rampSeconds=20;durationSeconds=$workloadDuration;thinkMinMs=1000;thinkRangeMs=1000}
     }
     Save-NewJson (Join-Path $runDirectory 'execution-start.json') $execution
     Write-Host ('RESULT DIRECTORY: ' + $runDirectory)
@@ -182,7 +197,9 @@ try {
     $jobErrors = @($monitorJob.ChildJobs | ForEach-Object { $_.Error })
     $execution['monitorErrorCount'] = $jobErrors.Count
     Save-NewJson (Join-Path $runDirectory 'execution.json') $execution
-    $postText = & python $checker postcheck --run-dir $runDirectory
+    $postArgs = @($checker, 'postcheck', '--run-dir', $runDirectory)
+    if ($Endurance) { $postArgs += '--endurance' }
+    $postText = & python @postArgs
     $postExit = $LASTEXITCODE
     $postResult = $postText | ConvertFrom-Json
     Write-Host ('NATIVE JMETER LAUNCHER EXIT CODE: ' + $nativeExit)

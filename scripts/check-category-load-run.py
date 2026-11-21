@@ -9,6 +9,7 @@ import csv
 import datetime as dt
 import hashlib
 import hmac
+import math
 import json
 import os
 from pathlib import Path
@@ -18,7 +19,7 @@ import urllib.request
 
 EXPECTED = {
     'test-plans/23120274_Load_20261118.jmx': '3b63a24f3e36b469fb3eca4b983019eb69b462a9feea7e7f2ec9bc910ecca261',
-    'scripts/category-load-support.groovy': 'fc05672162cf5a28df0a35a0e9b6869e10811e74d27a8022a7dd43be6224f995',
+    'scripts/category-load-support.groovy': 'da0a16328c771493f5ecfe4d45366a6156dee6249c7a63872ac9f9a84e602a83',
     'scripts/recover-category-load.groovy': '6849ef3de5437900083300def23c44b7e0776b45fc5e0c7bd83db0c892e962ec',
     'data/categories.csv': 'c237523a3f44a5d1471b3d4483bcb25c76495e9972e6a0f2b6bf9bec0dc1a23e',
 }
@@ -83,13 +84,15 @@ def fingerprint(root):
     return {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in paths}
 
 
-def preflight(root):
+def preflight(root, endurance=False):
     hashes = fingerprint(root)
     require(all(hashes[name] == digest for name, digest in EXPECTED.items()), 'REVIEWED_HASH_CHANGED')
     admin = readonly_admin(root, True)  # Check without a failed login/lockout side effect.
     baseline = snapshot(root)
     require(baseline['admin'] == admin, 'ADMIN_CHANGED_DURING_PREFLIGHT')
-    return {'kind': 'load_preflight', 'checkedAt': now(), 'status': 'READY',
+    if endurance:
+        require(not any(c['name'].startswith('HW05_23120274_') for c in baseline['categories']), 'UNRESOLVED_OWNED_CATEGORY')
+    return {'kind': 'endurance_preflight' if endurance else 'load_preflight', 'checkedAt': now(), 'status': 'READY',
             'hashesBefore': hashes, 'baseline': baseline,
             'credentialsVerifiedReadOnly': True, 'credentialValuesOmitted': True}
 
@@ -100,10 +103,10 @@ def write_new(path, data):
         stream.write('\n')
 
 
-def postcheck(root, run_dir):
+def postcheck(root, run_dir, endurance=False):
     pre = json.loads((run_dir / 'preflight.json').read_text(encoding='utf-8-sig'))
     execution = json.loads((run_dir / 'execution.json').read_text(encoding='utf-8-sig'))
-    result = {'kind': 'load_task1_postcheck', 'checkedAt': now(), 'runId': execution['runId'],
+    result = {'kind': 'endurance_task1_postcheck' if endurance else 'load_task1_postcheck', 'checkedAt': now(), 'runId': execution['runId'],
               'status': 'REVIEW_REQUIRED', 'checks': {}, 'limitations': [
                   'No SLA pass, capacity estimate, bottleneck diagnosis or Task 2 analysis.',
                   'A passing postcheck does not test forced-stop/timeout recovery.',
@@ -143,7 +146,7 @@ def postcheck(root, run_dir):
             row['success'].lower() == 'true' and row['responseCode'] == '200' for row in rows)
         forbidden = {'responseData', 'samplerData', 'requestHeaders', 'responseHeaders', 'password', 'token'}
         checks['noSensitiveJtlColumns'] = not bool(set(columns) & forbidden)
-        manifest = root / 'audit/manifests' / execution['runId'] / 'load_local'
+        manifest = root / 'audit/manifests' / execution['runId'] / ('endurance_local' if endurance else 'load_local')
         groups = collections.defaultdict(list)
         for file in manifest.glob('thread-*.jsonl'):
             for line in file.read_text(encoding='utf-8').splitlines():
@@ -171,6 +174,38 @@ def postcheck(root, run_dir):
         checks['cleanupVerified'] = cleanup['cleanupStatus'] == 'VERIFIED' and not cleanup['unresolvedIntents']
         checks['scheduleNotStoppedByGuard'] = summary['performanceStatus'] == 'SCHEDULE_FINISHED_NOT_A_PERFORMANCE_PASS'
         checks['dashboardExists'] = (run_dir / 'html/index.html').exists()
+        if endurance:
+            require(execution['kind'] == 'official_endurance' and execution['workload'] ==
+                    dict(threads=50, rampSeconds=20, durationSeconds=900, thinkMinMs=1000, thinkRangeMs=1000),
+                    'WRONG_ENDURANCE_METADATA')
+            timing = json.loads((manifest / 'endurance-timing.json').read_text(encoding='utf-8'))
+            checks['enduranceTimestampAndThreads'] = {'timeStamp','elapsed','grpThreads','allThreads'}.issubset(columns)
+            checks['endurancePeak50Observed'] = bool(rows) and max(int(r['allThreads']) for r in rows) == 50
+            checks['enduranceTimingMetadata'] = timing['durationSeconds'] == 900 and timing['rampSeconds'] == 20
+            stop = json.loads((manifest / 'endurance-stop.json').read_text(encoding='utf-8'))
+            observed_duration_ms = stop['mainStoppedEpochMs'] - timing['anchorEpochMs']
+            # Standard JMeter scheduler may skip the final think timer rather than wait past its deadline.
+            # Keep actual duration/window completeness visible; this2s allowance derives solely from max think time.
+            checks['enduranceNominalDurationReached'] = (not stop['stoppedByGuard'] and
+                observed_duration_ms >= 900000 - 2000 and checks['scheduleNotStoppedByGuard'])
+            result['enduranceObservedMainDurationMs'] = observed_duration_ms
+            minutes = endurance_minutes(rows, resource_rows, timing['anchorEpochMs'],
+                                        checks['enduranceNominalDurationReached'], stop['mainStoppedEpochMs'])
+            with (run_dir / 'minute-metrics.csv').open('x',encoding='utf-8',newline='') as stream:
+                writer=csv.DictWriter(stream,fieldnames=list(minutes[0]))
+                writer.writeheader();writer.writerows(minutes)
+            checks['enduranceAll15MinutesCovered'] = all(m['samples'] > 0 and m['resource_samples'] > 0
+                                                        for m in minutes if m['label'] == 'ALL_HTTP')
+            result['minuteMetricsDefinition'] = {
+                'anchorEpochMs':timing['anchorEpochMs'], 'windowSeconds':60, 'windows':15,
+                'sampleTimestamp':'actual HTTP start in epoch milliseconds',
+                'p95':'nearest rank ceil(0.95*N); failed samples included; per label plus ALL_HTTP',
+                'throughput':'samples/60; incomplete scheduled windows explicitly flagged',
+                'ramp':'first minute contains20s ramp; no claim of15min steady50VU',
+                'partialWindows':'window_complete uses actual pre-cleanup stop time; incomplete first/last windows must not be extrapolated',
+                'resourceScope':'backend process CPU/working set/private bytes and host available RAM',
+                'threshold':'No sustainable threshold or SLA pass inferred automatically.'}
+
         all_findings = []
         scan_files = [file for file in run_dir.rglob('*') if file.is_file()]
         scan_files += [file for file in manifest.rglob('*') if file.is_file() and file.suffix in ('.json', '.jsonl')]
@@ -195,20 +230,55 @@ def postcheck(root, run_dir):
             'completeWorkloadIterations': result.get('completeWorkloadIterations'), 'issues': issues}
 
 
+def endurance_minutes(rows, resources, anchor_ms, schedule_finished, actual_stop_ms=None):
+    """Actual run data only; fixed60s windows, no inferred SLA. Pure calculation."""
+    parsed=[]
+    for r in resources:
+        instant=dt.datetime.fromisoformat(r['timestampUtc'].replace('Z','+00:00'))
+        parsed.append((int(instant.timestamp()*1000),r))
+    observed_end=max((int(r['timeStamp'])+int(r['elapsed']) for r in rows),default=anchor_ms)
+    output=[]
+    for minute in range(15):
+        start=anchor_ms+minute*60000;end=start+60000
+        block=[r for r in rows if start<=int(r['timeStamp'])<end]
+        resource=[r for t,r in parsed if start<=t<end]
+        complete=schedule_finished and (actual_stop_ms if actual_stop_ms is not None else observed_end)>=end
+        for label in ['ALL_HTTP']+LABELS:
+            samples=block if label=='ALL_HTTP' else [r for r in block if r['label']==label]
+            values=sorted(int(r['elapsed']) for r in samples)
+            failures=sum(r['success'].lower()!='true' or r['responseCode']!='200' for r in samples)
+            record=dict(minute=minute+1,window_start_epoch_ms=start,window_end_epoch_ms=end,
+                        window_seconds=60,window_complete=complete,includes_ramp=minute==0,label=label,
+                        samples=len(samples),failed_samples=failures,throughput_per_second=round(len(samples)/60,6),
+                        mean_response_ms=round(sum(values)/len(values),6) if values else None,
+                        p95_response_ms=values[math.ceil(.95*len(values))-1] if values else None,
+                        error_rate_percent=round(100*failures/len(samples),6) if samples else None,
+                        resource_samples=len(resource))
+            for key in ['backendCpuPercentOneCore','backendCpuPercentMachine','backendWorkingSetMiB',
+                        'backendPrivateBytesMiB','hostFreeRAMMiB']:
+                nums=[float(r[key]) for r in resource if r.get(key) not in [None,'']]
+                record[key+'_mean']=round(sum(nums)/len(nums),6) if nums else None
+                record[key+'_min']=min(nums) if nums else None
+                record[key+'_max']=max(nums) if nums else None
+            output.append(record)
+    return output
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=('preflight', 'postcheck'))
     parser.add_argument('--run-dir', type=Path)
+    parser.add_argument('--endurance', action='store_true')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     try:
         if args.mode == 'preflight':
-            result = preflight(root)
+            result = preflight(root, endurance=args.endurance)
         else:
             require(args.run_dir is not None, 'RUN_DIRECTORY_REQUIRED')
             run_dir = args.run_dir.resolve()
-            require(run_dir.is_relative_to(root / 'results/load'), 'RUN_PATH_OUTSIDE_OFFICIAL_LOAD_DIRECTORY')
-            result = postcheck(root, run_dir)
+            require(run_dir.is_relative_to(root / ('results/endurance' if args.endurance else 'results/load')), 'RUN_PATH_OUTSIDE_SELECTED_SCENARIO')
+            result = postcheck(root, run_dir, endurance=args.endurance)
         print(json.dumps(result, ensure_ascii=True))
         return 0 if result['status'] in ('READY', 'FUNCTIONAL_AND_CLEANUP_VERIFIED_NOT_SLA_PASS') else 2
     except Exception:

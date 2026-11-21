@@ -1,0 +1,9 @@
+{
+    "anchorEpochMs": 1795160302079,
+    "scheduledEndEpochMs": 1795161202079,
+    "observedFirstGateEpochMs": 1795160302304,
+    "durationSeconds": 900,
+    "rampSeconds": 20,
+    "timestamp": "2026-11-20T07:38:22.306590900Z",
+    "definition": "Scheduler end minus declared duration; raw JTL timestamps are actual HTTP starts"
+}

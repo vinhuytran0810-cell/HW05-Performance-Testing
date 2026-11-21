@@ -128,6 +128,24 @@ class Hw05CategoryLoad {
                       baselineHash: cfg.baselineHash] + details
         append(new File(cfg.dir as String, String.format('thread-%04d.jsonl', owner.thread as int)), record, cfg.journalMutex)
     }
+    /** Pure validation; no network, credentials, files or engine actions. */
+    static Map validateWorkload(Properties p) {
+        boolean endurance = p.getProperty('hw05.endurance', 'false') == 'true'
+        int threads = Integer.parseInt(p.getProperty('load_threads', '10'))
+        int ramp = Integer.parseInt(p.getProperty('ramp_seconds', '20'))
+        int duration = Integer.parseInt(p.getProperty('duration_seconds', '180'))
+        int thinkMin = Integer.parseInt(p.getProperty('think_min_ms', '1000'))
+        int thinkRange = Integer.parseInt(p.getProperty('think_range_ms', '1000'))
+        if (endurance) {
+            need(p.getProperty('hw05.endurance_reviewed', 'false') == 'true', 'ENDURANCE_REVIEW_REQUIRED')
+            need(threads == 50 && ramp == 20 && duration == 900 && thinkMin == 1000 && thinkRange == 1000,
+                 'ENDURANCE_WORKLOAD_MUST_BE_50_20_900_1000_1000')
+        } else {
+            need(threads >= 1 && threads <= 20 && ramp >= threads && duration > ramp, 'LOAD_WORKLOAD_OUTSIDE_REVIEWED_ENVELOPE')
+        }
+        need(thinkMin >= 1000 && thinkRange >= 0, 'LOAD_PACING_TOO_AGGRESSIVE')
+        [endurance:endurance, threads:threads, ramp:ramp, duration:duration, thinkMin:thinkMin, thinkRange:thinkRange]
+    }
     static Map setup(Properties p, File planDir) {
         p.remove(KEY)
         need(p.getProperty('hw05.allow_mutation', 'false') == 'true', 'REVIEW_REQUIRED_ALLOW_MUTATION')
@@ -141,13 +159,9 @@ class Hw05CategoryLoad {
         need(minFree >= 2048, 'MINIMUM_MEMORY_GUARD_CANNOT_BE_LOWERED')
         long freeMiB = freePhysicalMiB()
         need(freeMiB >= minFree, 'INSUFFICIENT_FREE_RAM')
-        int threads = Integer.parseInt(p.getProperty('load_threads', '10'))
-        int ramp = Integer.parseInt(p.getProperty('ramp_seconds', '20'))
-        int duration = Integer.parseInt(p.getProperty('duration_seconds', '180'))
-        int thinkMin = Integer.parseInt(p.getProperty('think_min_ms', '1000'))
-        int thinkRange = Integer.parseInt(p.getProperty('think_range_ms', '1000'))
-        need(threads >= 1 && threads <= 20 && ramp >= threads && duration > ramp, 'LOAD_WORKLOAD_OUTSIDE_REVIEWED_ENVELOPE')
-        need(thinkMin >= 1000 && thinkRange >= 0, 'LOAD_PACING_TOO_AGGRESSIVE')
+        Map workload = validateWorkload(p)
+        int threads = workload.threads, ramp = workload.ramp, duration = workload.duration
+        int thinkMin = workload.thinkMin, thinkRange = workload.thinkRange
         File csv = new File(p.getProperty('csv_file', '../data/categories.csv'))
         if (!csv.absolute) csv = new File(planDir, csv.path)
         csv = csv.canonicalFile
@@ -163,6 +177,7 @@ class Hw05CategoryLoad {
                    responseTimeout: Integer.parseInt(p.getProperty('response_timeout_ms', '10000')),
                    minFreeMiB: minFree, abort: new AtomicBoolean(false), ready: false, journalMutex: new Object(), acceptQuiescent: false]
         need(cfg.connectTimeout > 0 && cfg.responseTimeout > 0, 'TIMEOUTS_MUST_BE_POSITIVE')
+        if (workload.endurance) { cfg.endurance = true; cfg.durationSeconds = duration; cfg.rampSeconds = ramp }
         Map auth = authenticate(cfg)
         cfg.adminId = auth.adminId
         cfg.adminBefore = adminState(cfg, auth.token as String)
@@ -182,6 +197,7 @@ class Hw05CategoryLoad {
             List sources = ['eshop-sut/backend/server.js', 'eshop-sut/backend/database.js', 'eshop-sut/frontend-admin/src/App.jsx',
                             'data/categories.csv', 'test-plans/23120274_Load_20261118.jmx',
                             'scripts/category-load-support.groovy', 'scripts/recover-category-load.groovy']
+            if (workload.endurance) sources += ['scripts/run-category-load.ps1', 'scripts/check-category-load-run.py']
             cfg.sourceHashes = sources.collectEntries { f -> [(f): sha(new File(root, f).bytes)] }
             Map saved = [schema: 1, createdAt: Instant.now().toString(), runId: runId, engineId: engineId,
                          root: cfg.root, dir: cfg.dir, baseUrl: cfg.baseUrl, connectTimeout: cfg.connectTimeout,
@@ -193,6 +209,7 @@ class Hw05CategoryLoad {
                          runtimeHardware: [logicalProcessors: Runtime.runtime.availableProcessors(), freeRAMMiB: freeMiB],
                          assumptions: ['isolated SUT', 'no product/category changes by other actors', 'no backend restart',
                                        'no read-after-create in measured workflow; exact-name proof deferred to recovery if needed']]
+            if (workload.endurance) saved.workload.scenario = 'Endurance'
             writeNew(new File(dir, 'baseline.json'), saved)
             cfg.ready = true
             p.put(KEY, cfg)
@@ -220,6 +237,20 @@ class Hw05CategoryLoad {
             return // Any unfinished intent remains in the manifest for out-of-window recovery.
         }
         try {
+            if (c.endurance) {
+                synchronized (c.journalMutex) {
+                    if (c.mainAnchorEpochMs == null) {
+                        c.scheduledEndEpochMs = b.getVariable('ctx').getThread().getEndTime()
+                        need((c.scheduledEndEpochMs as long) > 0, 'ENDURANCE_SCHEDULER_END_MISSING')
+                        c.mainAnchorEpochMs = (c.scheduledEndEpochMs as long) - (c.durationSeconds as long)*1000L
+                        writeNew(new File(c.dir as String, 'endurance-timing.json'),
+                            [anchorEpochMs:c.mainAnchorEpochMs, scheduledEndEpochMs:c.scheduledEndEpochMs,
+                             observedFirstGateEpochMs:System.currentTimeMillis(), durationSeconds:c.durationSeconds,
+                             rampSeconds:c.rampSeconds, timestamp:Instant.now().toString(),
+                             definition:'Scheduler end minus declared duration; raw JTL timestamps are actual HTTP starts'])
+                    }
+                }
+            }
             need(freePhysicalMiB() >= (c.minFreeMiB as long), 'FREE_RAM_BELOW_REVIEWED_FLOOR')
             ['token','category_id','login_user_id','login_role','login_body','category_body'].each { v.remove(it) }
             v.put('pending', 'false')
@@ -326,6 +357,7 @@ class Hw05CategoryLoad {
             if (step == 'CREATE') v.put('create_valid', 'false')
             try { if (v.get('pending') == 'true') event(c, owner, 'RECOVERY_REQUIRED', [code: step + '_FAILED']) } catch (Exception ignoredAgain) { }
         } finally {
+            if (c?.endurance) prev.setResponseMessage(prev.responseCode ==~ /[0-9]{3}/ ? 'HW05_HTTP_' + prev.responseCode : 'HW05_TRANSPORT_FAILURE')
             scrub(prev) // Extractors have already run. Never retain raw Login/Authorization data in listeners/JTL.
             if (step == 'LOGIN') v.remove('login_body')
             if (step == 'VERIFY') { v.remove('token'); v.remove('category_body') }
@@ -425,6 +457,13 @@ class Hw05CategoryLoad {
         Map c = cfg(b)
         if (c == null) return
         c.ready = false
+        if (c.endurance) {
+            try {
+                writeNew(new File(c.dir as String, 'endurance-stop.json'),
+                    [mainStoppedEpochMs:System.currentTimeMillis(), timestamp:Instant.now().toString(),
+                     stoppedByGuard:c.abort.get(), scheduledEndEpochMs:c.scheduledEndEpochMs])
+            } catch (Exception ignored) { c.abort.set(true) }
+        }
         try {
             Map result = recover(c, false)
             b.getVariable('props').put('hw05.cleanup_status', result.cleanupStatus)

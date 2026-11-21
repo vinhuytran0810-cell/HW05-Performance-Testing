@@ -1,0 +1,108 @@
+{
+  "kind": "endurance_task1_postcheck",
+  "checkedAt": "2026-11-21T03:15:12.452494+00:00",
+  "runId": "endurance_20261121T095946_618d6730",
+  "status": "FUNCTIONAL_AND_CLEANUP_VERIFIED_NOT_SLA_PASS",
+  "checks": {
+    "hashesUnchanged": true,
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "adminUnchangedAndClean": true,
+    "nativeExitZero": true,
+    "backendProcessUnchanged": true,
+    "resourceMonitorCompleted": true,
+    "backendResourceEvidencePresent": true,
+    "noBackendRestartAlert": true,
+    "fiveHttpLabelsPresent": true,
+    "allHttpAndAssertionsSuccessful": true,
+    "noSensitiveJtlColumns": true,
+    "atLeastOneCompleteIteration": true,
+    "manifestCorrelationConsistent": true,
+    "cleanupVerified": true,
+    "scheduleNotStoppedByGuard": true,
+    "dashboardExists": true,
+    "enduranceTimestampAndThreads": true,
+    "endurancePeak50Observed": true,
+    "enduranceTimingMetadata": true,
+    "enduranceNominalDurationReached": true,
+    "enduranceAll15MinutesCovered": true,
+    "noKnownSecretsDetected": true
+  },
+  "limitations": [
+    "No SLA pass, capacity estimate, bottleneck diagnosis or Task 2 analysis.",
+    "A passing postcheck does not test forced-stop/timeout recovery.",
+    "Secret scan covers known credentials, JWT patterns and JTL columns; it is not universal."
+  ],
+  "resourceSampleCount": 847,
+  "rawJtlSHA256": "9e9a9365b8f7630469ba14c0675907152c6c00ff093aa44322eb802a88580ef4",
+  "jtlColumns": [
+    "timeStamp",
+    "elapsed",
+    "label",
+    "responseCode",
+    "responseMessage",
+    "threadName",
+    "dataType",
+    "success",
+    "bytes",
+    "sentBytes",
+    "grpThreads",
+    "allThreads",
+    "URL",
+    "Latency",
+    "IdleTime",
+    "Connect"
+  ],
+  "samples": 145384,
+  "byLabel": {
+    "01_Admin_Login": 29077,
+    "02_View_Categories": 29077,
+    "03_Create_Category": 29077,
+    "04_Delete_Category": 29077,
+    "05_Verify_Category_Deletion": 29076
+  },
+  "failedSamples": 0,
+  "ownedIntents": 29077,
+  "completeWorkloadIterations": 29076,
+  "cleanupResult": {
+    "stepName": "RECOVERY_RESULT",
+    "timestamp": "2026-11-21T03:15:06.060862200Z",
+    "cleanupStatus": "VERIFIED",
+    "categoriesUnchanged": true,
+    "productsUnchanged": true,
+    "ownedAbsent": true,
+    "adminAfter": {
+      "id": 1,
+      "role": "admin",
+      "login_attempts": 0,
+      "locked_until": null
+    },
+    "unresolvedIntents": [],
+    "recoveryDeletes": 0,
+    "quiescenceAcknowledged": false
+  },
+  "runSummary": {
+    "timestamp": "2026-11-21T03:15:06.060862200Z",
+    "stepName": "RUN_SUMMARY",
+    "performanceStatus": "SCHEDULE_FINISHED_NOT_A_PERFORMANCE_PASS",
+    "cleanupStatus": "VERIFIED"
+  },
+  "enduranceObservedMainDurationMs": 900038,
+  "minuteMetricsDefinition": {
+    "anchorEpochMs": 1795229993890,
+    "windowSeconds": 60,
+    "windows": 15,
+    "sampleTimestamp": "actual HTTP start in epoch milliseconds",
+    "p95": "nearest rank ceil(0.95*N); failed samples included; per label plus ALL_HTTP",
+    "throughput": "samples/60; incomplete scheduled windows explicitly flagged",
+    "ramp": "first minute contains20s ramp; no claim of15min steady50VU",
+    "partialWindows": "window_complete uses actual pre-cleanup stop time; incomplete first/last windows must not be extrapolated",
+    "resourceScope": "backend process CPU/working set/private bytes and host available RAM",
+    "threshold": "No sustainable threshold or SLA pass inferred automatically."
+  },
+  "secretScan": {
+    "filesScanned": 190,
+    "findings": []
+  },
+  "issues": []
+}

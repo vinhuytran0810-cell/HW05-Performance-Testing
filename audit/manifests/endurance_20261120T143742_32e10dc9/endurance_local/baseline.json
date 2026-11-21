@@ -1,0 +1,105 @@
+{
+    "schema": 1,
+    "createdAt": "2026-11-20T07:38:21.868693400Z",
+    "runId": "endurance_20261120T143742_32e10dc9",
+    "engineId": "endurance_local",
+    "root": "E:\\KiemThu\\HW05",
+    "dir": "E:\\KiemThu\\HW05\\audit\\manifests\\endurance_20261120T143742_32e10dc9\\endurance_local",
+    "baseUrl": "http://localhost:3000",
+    "connectTimeout": 3000,
+    "responseTimeout": 10000,
+    "minFreeMiB": 2048,
+    "adminId": 1,
+    "adminBefore": {
+        "id": 1,
+        "role": "admin",
+        "login_attempts": 0,
+        "locked_until": null
+    },
+    "baselineCategories": [
+        {
+            "id": 1,
+            "name": "\u0110i\u1ec7n tho\u1ea1i"
+        },
+        {
+            "id": 2,
+            "name": "Laptop"
+        },
+        {
+            "id": 3,
+            "name": "Ph\u1ee5 ki\u1ec7n"
+        }
+    ],
+    "baselineProducts": [
+        {
+            "id": 1,
+            "name": "iPhone 15 Pro Max",
+            "price": 30000000,
+            "description": "\u0110i\u1ec7n tho\u1ea1i cao c\u1ea5p c\u1ee7a Apple",
+            "imageUrl": "https://placehold.co/300x300/png?text=iPhone+15",
+            "category_id": 1
+        },
+        {
+            "id": 2,
+            "name": "Samsung Galaxy S24 Ultra",
+            "price": 28000000,
+            "description": "M\u00e0n h\u00ecnh hi\u1ec3n th\u1ecb xu\u1ea5t s\u1eafc, camera si\u00eau zoom",
+            "imageUrl": "https://placehold.co/300x300/png?text=Samsung+S24",
+            "category_id": 1
+        },
+        {
+            "id": 3,
+            "name": "MacBook Pro M3",
+            "price": 45000000,
+            "description": "Laptop chuy\u00ean nghi\u1ec7p m\u1ea1nh m\u1ebd",
+            "imageUrl": "https://placehold.co/300x300/png?text=Macbook+Pro",
+            "category_id": 2
+        },
+        {
+            "id": 4,
+            "name": "Tai nghe AirPods Pro 2",
+            "price": 6000000,
+            "description": "Ch\u1ed1ng \u1ed3n ch\u1ee7 \u0111\u1ed9ng xu\u1ea5t s\u1eafc",
+            "imageUrl": "https://placehold.co/300x300/png?text=AirPods+Pro",
+            "category_id": 3
+        },
+        {
+            "id": 5,
+            "name": "B\u00e0n ph\u00edm c\u01a1 Keychron Q1",
+            "price": 4000000,
+            "description": "G\u00f5 c\u1ef1c s\u01b0\u1edbng, thi\u1ebft k\u1ebf kim lo\u1ea1i",
+            "imageUrl": "https://placehold.co/300x300/png?text=Keychron+Q1",
+            "category_id": 3
+        }
+    ],
+    "baselineHash": "cd3f256a8b730a2d7e1503b348db65e27447104d45d40892e9bf72040c353b76",
+    "sourceHashes": {
+        "eshop-sut/backend/server.js": "e2263811a1690a63a7dbb4446c3fd33fb87f50d073d9f8cdfab7083a52f5e8ed",
+        "eshop-sut/backend/database.js": "50012f35c2cf0776dd837482d76adf701f0ee40cdcb9d80143278fccde034717",
+        "eshop-sut/frontend-admin/src/App.jsx": "f43a7ed720eb2608563ab5329edc2858f4aab913ecfb57784b30a467803c5b5f",
+        "data/categories.csv": "c237523a3f44a5d1471b3d4483bcb25c76495e9972e6a0f2b6bf9bec0dc1a23e",
+        "test-plans/23120274_Load_20261118.jmx": "3b63a24f3e36b469fb3eca4b983019eb69b462a9feea7e7f2ec9bc910ecca261",
+        "scripts/category-load-support.groovy": "da0a16328c771493f5ecfe4d45366a6156dee6249c7a63872ac9f9a84e602a83",
+        "scripts/recover-category-load.groovy": "6849ef3de5437900083300def23c44b7e0776b45fc5e0c7bd83db0c892e962ec",
+        "scripts/run-category-load.ps1": "610980a699d2e48697936718d06e7a23c39ac853fd88c12cb9b2b38f67a822d7",
+        "scripts/check-category-load-run.py": "94642d3f5cbe418d15517758c386a5db1eaad5fe5b715e0c7fcda34713f6ee7d"
+    },
+    "workload": {
+        "threads": 50,
+        "rampSeconds": 20,
+        "durationSeconds": 900,
+        "thinkMinMs": 1000,
+        "thinkRangeMs": 1000,
+        "scenario": "Endurance"
+    },
+    "runtimeHardware": {
+        "logicalProcessors": 12,
+        "freeRAMMiB": 3172
+    },
+    "assumptions": [
+        "isolated SUT",
+        "no product/category changes by other actors",
+        "no backend restart",
+        "no read-after-create in measured workflow; exact-name proof deferred to recovery if needed"
+    ]
+}
